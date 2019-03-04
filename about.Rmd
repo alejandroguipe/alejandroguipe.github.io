@@ -1,3 +1,8 @@
 ---
-title: "About This Website"
+title: "Contacto"
 ---
+Este sitio web ha sido construido con la finalidad de compartir proyectos de investigación relacionados con el área de economía, matemáticas, estadística y programación. Mis datos de contacto son los siguientes:
+
+http://alejandroguipe.com.ve
+
+alejandroguipe@email.com

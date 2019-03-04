@@ -1,9 +1,14 @@
-name: "my-website"
+name: "Alejandro Guipe"
 output_dir: "."
 navbar:
-  title: "My Website"
+  title: "Repositorio"
   left:
-    - text: "Home"
+    - text: "Introducción"
       href: index.html
-    - text: "About"
+    - text: "R"
+      href: r.html
+    - text: "Python"
+      href: python.html
+    - text: "Contacto"
       href: about.html
+      

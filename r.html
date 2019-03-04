@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Lenguaje R</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Repositorio</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Introducción</a>
+</li>
+<li>
+  <a href="r.html">R</a>
+</li>
+<li>
+  <a href="python.html">Python</a>
+</li>
+<li>
+  <a href="about.html">Contacto</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lenguaje R</h1>
+
+</div>
+
+
+<div id="analisis-exploratorio-de-datos-con-lenguaje-r" class="section level1">
+<h1>Análisis Exploratorio de Datos con lenguaje R</h1>
+<p>El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados.</p>
+<p>La base de datos que se utiliza está disponible en <a href="https://www.kaggle.com/spscientist/students-performance-in-exams" class="uri">https://www.kaggle.com/spscientist/students-performance-in-exams</a> (debes registrarte para descargar). Dicha base de datos se encuentra alojada en el archivo StudentsPerformance.csv e incluye las notas de tres exámenes (matemática, lectura y escritura) para un grupo de estudiantes. Adicionalmente, se proporciona información demográfica de los estudiantes y sus padres, así como sobre su desempeño escolar.</p>
+<p>A partir de la base de datos y el análisis exploratorio de datos se hace énfasis en entender las diferencias descriptivas y la relación entre variables dividiendo la base de datos por el nivel de educación de los padres. Es decir, se ejecuta un análisis descriptivo tanto de las notas de los exámenes, como de las demás variables de las bases de datos, separando por el nivel de educación de los padres.</p>
+<div id="preparativos" class="section level2">
+<h2>Preparativos</h2>
+<p>Para realizar los cálculos y mostrar las diversas gráficas se requieren de diversos paquetes con los que cuenta el lenguaje R para estas tareas. El paquete <strong>“ggplot2”</strong> es un potente paquete de graficación y visualización de datos. El paquete <strong>“corrplot”</strong> es requerido para el cálculo y la graficación de la matriz de correlación de un conjunto de datos. El paquete <strong>“plyr”</strong> es requerido para la manipulación de datos y subconjunntos de los mismo. Por último El paquete <strong>“plotrix”</strong> es requerido para la graficación de diagramas de torta en 3D.</p>
+<pre class="r"><code>install.packages(&quot;ggplot2&quot;)
+install.packages(&quot;corrplot&quot;)
+install.packages(&quot;plyr&quot;)
+install.packages(&quot;plotrix&quot;)</code></pre>
+</div>
+<div id="carga-y-reorganizacion-de-datos" class="section level2">
+<h2>Carga y reorganización de datos</h2>
+<p>A través de los siguientes comandos cargamos los datos del archivo StudentsPerformance.csv al data frame <strong>“datos”</strong>, renombramos la columnas del data frame para facilitar lectura y escritura de código y separamos nuestra base de datos de acuerdo al nivel de educación de los padres en 6 conjuntos.</p>
+<pre class="r"><code>datos&lt;-read.csv(&quot;StudentsPerformance.csv&quot;)
+
+colnames(datos)&lt;-c(&quot;gender&quot;,&quot;race&quot;,&quot;education&quot;, &quot;lunch&quot;, &quot;testprep&quot;, &quot;math&quot;,&quot;reading&quot;, &quot;writing&quot;)
+
+datos1 &lt;- datos[datos$education==&quot;associate&#39;s degree&quot;,]
+datos2 &lt;- datos[datos$education==&quot;bachelor&#39;s degree&quot;,]
+datos3 &lt;- datos[datos$education==&quot;high school&quot;,]
+datos4 &lt;- datos[datos$education==&quot;master&#39;s degree&quot;,]
+datos5 &lt;- datos[datos$education==&quot;some college&quot;,]
+datos6 &lt;- datos[datos$education==&quot;some high school&quot;,]</code></pre>
+</div>
+<div id="resumen-y-visualizacion-de-la-composicion-los-datos" class="section level2">
+<h2>Resumen y visualización de la composición los datos</h2>
+<p>A continuación se muestran algunos comandos que nos ayudan a entender la composición de nuestra base de datos. Con los comandos <strong>head</strong> y <strong>tails</strong> nos permiten ver las primeras y últimas 6 filas del data frame <strong>“datos”</strong>. El comando <strong>names</strong> observamos los nombres de las columnas de la matriz. El comando <strong>str</strong> lista el conjunto de variables que se encuentran en la base datos junto a algunos datos particulares que destacan el número y naturaleza de las variables. Por último, el comando <strong>summary</strong> vendría a ser el más útil y nos ofrece un resumen de las variables tanto numéricas como no numéricas, sus frecuencias, cantidad, media, mediana y valores máximos y mínimos.</p>
+<pre class="r"><code>head(datos)</code></pre>
+<pre><code>##   gender    race          education        lunch  testprep math reading
+## 1 female group B  bachelor&#39;s degree     standard      none   72      72
+## 2 female group C       some college     standard completed   69      90
+## 3 female group B    master&#39;s degree     standard      none   90      95
+## 4   male group A associate&#39;s degree free/reduced      none   47      57
+## 5   male group C       some college     standard      none   76      78
+## 6 female group B associate&#39;s degree     standard      none   71      83
+##   writing
+## 1      74
+## 2      88
+## 3      93
+## 4      44
+## 5      75
+## 6      78</code></pre>
+<pre class="r"><code>tail(datos)</code></pre>
+<pre><code>##      gender    race       education        lunch  testprep math reading
+## 995    male group A     high school     standard      none   63      63
+## 996  female group E master&#39;s degree     standard completed   88      99
+## 997    male group C     high school free/reduced      none   62      55
+## 998  female group C     high school free/reduced completed   59      71
+## 999  female group D    some college     standard completed   68      78
+## 1000 female group D    some college free/reduced      none   77      86
+##      writing
+## 995       62
+## 996       95
+## 997       55
+## 998       65
+## 999       77
+## 1000      86</code></pre>
+<pre class="r"><code>names(datos)</code></pre>
+<pre><code>## [1] &quot;gender&quot;    &quot;race&quot;      &quot;education&quot; &quot;lunch&quot;     &quot;testprep&quot;  &quot;math&quot;     
+## [7] &quot;reading&quot;   &quot;writing&quot;</code></pre>
+<pre class="r"><code>str(datos)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    1000 obs. of  8 variables:
+##  $ gender   : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 1 1 2 2 1 1 2 2 1 ...
+##  $ race     : Factor w/ 5 levels &quot;group A&quot;,&quot;group B&quot;,..: 2 3 2 1 3 2 2 2 4 2 ...
+##  $ education: Factor w/ 6 levels &quot;associate&#39;s degree&quot;,..: 2 5 4 1 5 1 5 5 3 3 ...
+##  $ lunch    : Factor w/ 2 levels &quot;free/reduced&quot;,..: 2 2 2 1 2 2 2 1 1 1 ...
+##  $ testprep : Factor w/ 2 levels &quot;completed&quot;,&quot;none&quot;: 2 1 2 2 2 2 1 2 1 2 ...
+##  $ math     : int  72 69 90 47 76 71 88 40 64 38 ...
+##  $ reading  : int  72 90 95 57 78 83 95 43 64 60 ...
+##  $ writing  : int  74 88 93 44 75 78 92 39 67 50 ...</code></pre>
+<pre class="r"><code>summary(datos)</code></pre>
+<pre><code>##     gender         race                  education            lunch    
+##  female:518   group A: 89   associate&#39;s degree:222   free/reduced:355  
+##  male  :482   group B:190   bachelor&#39;s degree :118   standard    :645  
+##               group C:319   high school       :196                     
+##               group D:262   master&#39;s degree   : 59                     
+##               group E:140   some college      :226                     
+##                             some high school  :179                     
+##       testprep        math           reading          writing      
+##  completed:358   Min.   :  0.00   Min.   : 17.00   Min.   : 10.00  
+##  none     :642   1st Qu.: 57.00   1st Qu.: 59.00   1st Qu.: 57.75  
+##                  Median : 66.00   Median : 70.00   Median : 69.00  
+##                  Mean   : 66.09   Mean   : 69.17   Mean   : 68.05  
+##                  3rd Qu.: 77.00   3rd Qu.: 79.00   3rd Qu.: 79.00  
+##                  Max.   :100.00   Max.   :100.00   Max.   :100.00</code></pre>
+</div>
+<div id="analisis-descriptivo-de-los-datos" class="section level2">
+<h2>Análisis descriptivo de los datos</h2>
+<div id="medidas-de-tendencia-central-por-nivel-de-educacion-de-los-padres" class="section level3">
+<h3>Medidas de tendencia central por nivel de educación de los padres</h3>
+<pre class="r"><code>summary(datos1) </code></pre>
+<pre><code>##     gender         race                 education            lunch    
+##  female:116   group A:14   associate&#39;s degree:222   free/reduced: 77  
+##  male  :106   group B:41   bachelor&#39;s degree :  0   standard    :145  
+##               group C:78   high school       :  0                     
+##               group D:50   master&#39;s degree   :  0                     
+##               group E:39   some college      :  0                     
+##                            some high school  :  0                     
+##       testprep        math           reading          writing     
+##  completed: 82   Min.   : 26.00   Min.   : 31.00   Min.   : 35.0  
+##  none     :140   1st Qu.: 57.00   1st Qu.: 61.00   1st Qu.: 58.0  
+##                  Median : 67.00   Median : 72.50   Median : 70.5  
+##                  Mean   : 67.88   Mean   : 70.93   Mean   : 69.9  
+##                  3rd Qu.: 80.00   3rd Qu.: 81.00   3rd Qu.: 80.0  
+##                  Max.   :100.00   Max.   :100.00   Max.   :100.0</code></pre>
+<pre class="r"><code>summary(datos2)</code></pre>
+<pre><code>##     gender        race                 education            lunch   
+##  female:63   group A:12   associate&#39;s degree:  0   free/reduced:44  
+##  male  :55   group B:20   bachelor&#39;s degree :118   standard    :74  
+##              group C:40   high school       :  0                    
+##              group D:28   master&#39;s degree   :  0                    
+##              group E:18   some college      :  0                    
+##                           some high school  :  0                    
+##       testprep       math           reading          writing      
+##  completed:46   Min.   : 29.00   Min.   : 41.00   Min.   : 38.00  
+##  none     :72   1st Qu.: 61.00   1st Qu.: 63.00   1st Qu.: 62.50  
+##                 Median : 68.00   Median : 73.00   Median : 74.00  
+##                 Mean   : 69.39   Mean   : 73.00   Mean   : 73.38  
+##                 3rd Qu.: 79.00   3rd Qu.: 82.75   3rd Qu.: 83.00  
+##                 Max.   :100.00   Max.   :100.00   Max.   :100.00</code></pre>
+<pre class="r"><code>summary(datos3)</code></pre>
+<pre><code>##     gender         race                 education            lunch    
+##  female: 94   group A:18   associate&#39;s degree:  0   free/reduced: 70  
+##  male  :102   group B:48   bachelor&#39;s degree :  0   standard    :126  
+##               group C:64   high school       :196                     
+##               group D:44   master&#39;s degree   :  0                     
+##               group E:22   some college      :  0                     
+##                            some high school  :  0                     
+##       testprep        math          reading         writing      
+##  completed: 56   Min.   : 8.00   Min.   :24.00   Min.   : 15.00  
+##  none     :140   1st Qu.:53.75   1st Qu.:54.00   1st Qu.: 52.00  
+##                  Median :63.00   Median :66.00   Median : 64.00  
+##                  Mean   :62.14   Mean   :64.70   Mean   : 62.45  
+##                  3rd Qu.:72.00   3rd Qu.:74.25   3rd Qu.: 73.00  
+##                  Max.   :99.00   Max.   :99.00   Max.   :100.00</code></pre>
+<pre class="r"><code>summary(datos4)</code></pre>
+<pre><code>##     gender        race                 education           lunch   
+##  female:36   group A: 3   associate&#39;s degree: 0   free/reduced:24  
+##  male  :23   group B: 6   bachelor&#39;s degree : 0   standard    :35  
+##              group C:19   high school       : 0                    
+##              group D:23   master&#39;s degree   :59                    
+##              group E: 8   some college      : 0                    
+##                           some high school  : 0                    
+##       testprep       math          reading          writing      
+##  completed:20   Min.   :40.00   Min.   : 42.00   Min.   : 46.00  
+##  none     :39   1st Qu.:55.50   1st Qu.: 65.50   1st Qu.: 67.00  
+##                 Median :73.00   Median : 76.00   Median : 75.00  
+##                 Mean   :69.75   Mean   : 75.37   Mean   : 75.68  
+##                 3rd Qu.:81.00   3rd Qu.: 84.50   3rd Qu.: 85.00  
+##                 Max.   :95.00   Max.   :100.00   Max.   :100.00</code></pre>
+<pre class="r"><code>summary(datos5)</code></pre>
+<pre><code>##     gender         race                 education            lunch    
+##  female:118   group A:18   associate&#39;s degree:  0   free/reduced: 79  
+##  male  :108   group B:37   bachelor&#39;s degree :  0   standard    :147  
+##               group C:69   high school       :  0                     
+##               group D:67   master&#39;s degree   :  0                     
+##               group E:35   some college      :226                     
+##                            some high school  :  0                     
+##       testprep        math           reading          writing     
+##  completed: 77   Min.   : 19.00   Min.   : 23.00   Min.   :19.00  
+##  none     :149   1st Qu.: 59.00   1st Qu.: 60.00   1st Qu.:60.00  
+##                  Median : 67.50   Median : 70.50   Median :70.00  
+##                  Mean   : 67.13   Mean   : 69.46   Mean   :68.84  
+##                  3rd Qu.: 76.00   3rd Qu.: 79.75   3rd Qu.:79.00  
+##                  Max.   :100.00   Max.   :100.00   Max.   :99.00</code></pre>
+<pre class="r"><code>summary(datos6)</code></pre>
+<pre><code>##     gender        race                 education            lunch    
+##  female:91   group A:24   associate&#39;s degree:  0   free/reduced: 61  
+##  male  :88   group B:38   bachelor&#39;s degree :  0   standard    :118  
+##              group C:49   high school       :  0                     
+##              group D:50   master&#39;s degree   :  0                     
+##              group E:18   some college      :  0                     
+##                           some high school  :179                     
+##       testprep        math         reading          writing      
+##  completed: 77   Min.   : 0.0   Min.   : 17.00   Min.   : 10.00  
+##  none     :102   1st Qu.:53.0   1st Qu.: 56.50   1st Qu.: 54.00  
+##                  Median :65.0   Median : 67.00   Median : 66.00  
+##                  Mean   :63.5   Mean   : 66.94   Mean   : 64.89  
+##                  3rd Qu.:74.0   3rd Qu.: 79.00   3rd Qu.: 77.00  
+##                  Max.   :97.0   Max.   :100.00   Max.   :100.00</code></pre>
+</div>
+<div id="observaciones-de-las-medidas-de-tendencia-central" class="section level3">
+<h3>Observaciones de las medidas de tendencia central</h3>
+<p>Analizando las <strong>medidas de tendencia central</strong> se encuentra que en todas las asignaturas <strong>la media y mediana más alta</strong> de todos los grupos separados por educación de los padres son las del grupo de los estudiantes que tienen padres con nivel de educación <strong>“master’s degree”</strong>. Por otra parte, <strong>la media y mediana más baja</strong>, particularmente en la asignatura de matemáticas es la del grupo con padres que tienen nivel de educación <strong>“asoociate’s degree”</strong>. En las asignaturas de lectura y escritura, la media y mediana más baja es la del grupo con padres que tienen nivel de educación <strong>“high school”</strong>.</p>
+</div>
+<div id="observaciones-de-las-medidas-de-tendencia-no-central-o-analisis-de-cuartiles" class="section level3">
+<h3>Observaciones de las medidas de tendencia no central o análisis de cuartiles</h3>
+<p>Analizando las <strong>medidas de tendencia no central</strong> se encuentra que el grupo de estudiantes con padres que tienen nivel educativo <strong>“associate’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 57 en todas las asignaturas, aproximadamente el 50% por encima de 67 y aproximadamente el 25% por encima de 80.En el grupo de los estudiantes con padres que tienen <strong>“bachelor’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 61 en todas las asignaturas, aproximadamente el 50% por encima de 68 y aproximadamente el 25% por encima de 79. En el grupo de los estudiantes con padres que tienen <strong>“high school”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 52 en todas las asignaturas, aproximadamente el 50% por encima de 63 y aproximadamente el 25% por encima de 72. En el grupo de los estudiantes con padres que tienen <strong>“master’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 55 en todas las asignaturas, aproximadamente el 50% por encima de 73 y aproximadamente el 25% por encima de 81. En el grupo de los estudiantes con padres que tienen <strong>“some college”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 59 en todas las asignaturas, aproximadamente el 50% por encima de 67.5 y aproximadamente el 25% por encima de 76. En el grupo de los estudiantes con padres que tienen <strong>“some high school”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 54 en todas las asignaturas, aproximadamente el 50% por encima de 65 y aproximadamente el 25% por encima de 74.</p>
+</div>
+<div id="observaciones-de-las-medidas-de-desviacion-de-las-variables-numericas-de-acuerdo-al-nivel-de-educacion-de-los-padres" class="section level3">
+<h3>Observaciones de las medidas de desviación de las variables numéricas de acuerdo al nivel de educación de los padres</h3>
+<p>Para este apartado usamosel comando <strong>sd</strong> para calcular la desviación estándar y se lo aplicamos solamente a las columnas de 6 a la 8 que contienene las notas de las asignaturas a cada uno de las base de datos separadas por eduación de los padres (datos1, datos2,…). El procedimiento que se usa es el siguiente: se contruye un vector por cada grupo de estudiantes separados por nivel de educación de los padres, el vector se compone de la desviación estándar de cada columna que corresponde a las notas de las asignaturas matemáticas, lectura y escritura, luego se contruye un data frame para mostrar toda la información de manera organizada</p>
+<pre class="r"><code>sd1=c(sd(datos1[,6]),sd(datos1[,7]),sd(datos1[,8]))
+sd2=c(sd(datos2[,6]),sd(datos2[,7]),sd(datos2[,8]))
+sd3=c(sd(datos3[,6]),sd(datos3[,7]),sd(datos3[,8]))
+sd4=c(sd(datos4[,6]),sd(datos4[,7]),sd(datos4[,8]))
+sd5=c(sd(datos5[,6]),sd(datos5[,7]),sd(datos5[,8]))
+sd6=c(sd(datos6[,6]),sd(datos6[,7]),sd(datos6[,8]))
+
+notas=c(&quot;Notas de matemática&quot;, &quot;Notas de Lectura&quot;, &quot;Notas de escritura&quot;)
+datosd= data.frame(notas,sd1,sd2,sd3,sd4,sd5,sd6)
+colnames(datosd)=c(&quot;                  &quot;,&quot;  SDAD  &quot;,&quot;  SDBD  &quot;, &quot;  SDHS  &quot;, &quot;  SDMD  &quot;, &quot;  SDSC  &quot;, &quot;  SDSH  &quot;) 
+datosd</code></pre>
+<pre><code>##                         SDAD     SDBD     SDHS     SDMD     SDSC  
+## 1 Notas de matemática 15.11209 14.94379 14.53965 15.15392 14.31290
+## 2    Notas de Lectura 13.86895 14.28525 14.13213 13.77516 14.05705
+## 3  Notas de escritura 14.31112 14.72826 14.08591 13.73071 15.01233
+##     SDSH  
+## 1 15.92799
+## 2 15.47929
+## 3 15.73620</code></pre>
+<pre class="r"><code>#SD: Desviación Estándar
+#SDAD: SD Associate&#39;s Degree
+#SDBD: SD Bachelor&#39;s Degree
+#SDHS: SD High School
+#SDMD: SD Master&#39;s Degree
+#SDSC: SD Some College
+#SDSH: SD Some High School</code></pre>
+<p>Con respecto a las <strong>medidas de desviación</strong> de los grupos separados por el nivel educativo de los padres se puede decir que el grupo con <strong>notas más alejadas de la media en todas las asignaturas</strong> es el de los estudiantes con padres que tienen nivel educativo <strong>some high school</strong>, y el grupo <strong>con notas que menos se alejan de la media en matemáticas</strong> es el grupo de estudiantes con padres que tienen educación <strong>some college</strong> y los que tienen <strong>notas que menos se alejan de la media en las asignaturas de lectura y escritura</strong> es el grupo de estudiantes con padres que tienen <strong>master’s degree</strong> .</p>
+</div>
+</div>
+<div id="analisis-grafico" class="section level2">
+<h2>Análisis Gráfico</h2>
+<div id="matriz-de-dispersion" class="section level3">
+<h3>Matriz de dispersión</h3>
+<p>En este apartado mostraremos la matriz de dispersión de los datos a través del comando <strong>pairs</strong>, la matriz de dispersión muestra gráficamente el grado de correlación entre las variables, por medio de la diagonal y las columnas podemos encontrar el diagrama de dispersión que corresponde para cada par de variables. Se aplica este comando a cada base de datos separada de acuerdo al nivel de educación de los padres.</p>
+<pre class="r"><code>pairs(datos1, main=&quot;MDD Associate&#39;s Degree&quot;)  </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>pairs(datos2, main=&quot;MDD Bachelor&#39;s Degree&quot;)  </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<pre class="r"><code>pairs(datos3, main=&quot;MDD High School&quot;)  </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-3.png" width="672" /></p>
+<pre class="r"><code>pairs(datos4, main=&quot;MDD Master&#39;s Degree&quot;)  </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-4.png" width="672" /></p>
+<pre class="r"><code>pairs(datos5, main=&quot;MDD Some College&quot;) </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-5.png" width="672" /></p>
+<pre class="r"><code>pairs(datos6, main=&quot;MDD Some High School&quot;)  </code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-6-6.png" width="672" /></p>
+</div>
+<div id="observaciones-de-la-matriz-de-dispersion" class="section level3">
+<h3>Observaciones de la matriz de dispersión</h3>
+<p>El patrón que se percibe en todos los grupos según el nivel de educación en <strong>la matriz de dispersión</strong> es una fuerte correlacion positiva entre las notas de lectura y escritura y también entre matematicas y demás asignaturas. Lo que implica que a mejores notas en lectura los estudiantes sacan mejores notas en escritura y viceversa. Tambien se puede decir que si los estudiantes sacan mejores notas en matemáticas sacan mejores en lectura y escritura, sin embargo esta última relación se ve mucho más débil que en el caso exclusivo de lectura y escritura.</p>
+</div>
+<div id="diagramas-de-dispersion-de-todas-las-asignaturas-de-acuerdo-al-nivel-de-educacion-de-los-padres" class="section level3">
+<h3>Diagramas de dispersión de todas las asignaturas de acuerdo al nivel de educación de los padres</h3>
+<p>A traves de las siguientes instrucciones consolidamos sólo para las variables numéricas (notas de matemáticas, lectura y escritura) y en 3 gráficos en lugar de 18 los diagramos de dispersión de acuerdo al nivel de educacion de los padres que están identificados por colores usando el paquete <strong>ggplot2</strong>.</p>
+<pre class="r"><code>mdd1=ggplot(datos, aes(math,reading, color=education)) +geom_point() + stat_smooth(method = &quot;loess&quot;, formula = y ~ x)+ labs(title=&quot;Diagrama de Dispersión Notas de Matemáticas vs Notas de Lectura&quot;)+ labs(x=&quot;Notas de Matemática&quot;, y=&quot;Notas de Lectura&quot;) 
+mdd1</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<pre class="r"><code>mdd2=ggplot(datos, aes(reading,writing, color=education)) +geom_point() + stat_smooth(method = &quot;loess&quot;, formula = y ~ x) + labs(title=&quot;Diagrama de Dispersión Notas de Lectura vs Notas de Escritura&quot;)+ labs(x=&quot;Notas de Lectura&quot;, y=&quot;Notas de Escritura&quot;) 
+mdd2</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<pre class="r"><code>mdd3=ggplot(datos, aes(math,writing, color=education)) +geom_point() + stat_smooth(method = &quot;loess&quot;, formula = y ~ x) + labs(title=&quot;Diagrama de Dispersión Notas de Matemática vs Notas de Escritura&quot;)+ labs(x=&quot;Notas de Lectura&quot;, y=&quot;Notas de Escritura&quot;) 
+mdd3</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
+</div>
+<div id="histogramas" class="section level3">
+<h3>Histogramas</h3>
+<p>Usando el comando <strong>hist</strong> podemos obtener los diferentes histogramas de las notas por cada asignatura de acuerdo al nivel de educación de los padres. Mostraremos 6 histogramas por pantalla usando el comando <strong>layout</strong> que organiza nuestra ventana de visualización en 6 secciones.</p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$math, main=&quot;Associate&#39;s Degree&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos2$math, main=&quot;Bachelor&#39;s Degree&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos3$math, main=&quot;High School&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos4$math, main=&quot;Master&#39;s Degree&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos5$math, main=&quot;Some College&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos6$math, main=&quot;Some High School&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$reading, main=&quot;Associate&#39;s Degree&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos2$reading, main=&quot;Bachelor&#39;s Degree&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos3$reading, main=&quot;High School&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos4$reading, main=&quot;Master&#39;s Degree&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos5$reading, main=&quot;Some College&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos6$reading, main=&quot;Some High School&quot;, xlab=&quot;Notas de Lectura&quot;, ylab=&quot;Frecuencia&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$writing, main=&quot;Associate&#39;s Degree&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos2$writing, main=&quot;Bachelor&#39;s Degree&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos3$writing, main=&quot;High School&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos4$writing, main=&quot;Master&#39;s Degree&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos5$writing, main=&quot;Some College&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
+hist(datos6$writing, main=&quot;Some High School&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Si usamos el paquete <strong>ggplot2</strong> podemos simplificar las instrucciones y mostrar en un sólo gráfico todos los histogramas de acuerdo al nivel de educación de los padres en 3 gráficos que corresponden a cada asignatura.</p>
+<pre class="r"><code>hist1=ggplot(data=datos, aes(math)) + geom_histogram(binwidth=5, color=&quot;gray&quot;, aes(fill=education))+ labs(title=&quot;Notas de Matemáticas vs Educación de Padres&quot;)+ labs(x=&quot;Notas de Matemática&quot;, y=&quot;Frecuencia&quot;) 
+hist1</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<pre class="r"><code>hist2=ggplot(data=datos, aes(reading)) + geom_histogram(binwidth=5, color=&quot;gray&quot;, aes(fill=education))+ labs(title=&quot;Notas de Lectura vs Educación de Padres&quot;)+ labs(x=&quot;Notas de Lectura&quot;, y=&quot;Frecuencia&quot;) 
+hist2</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<pre class="r"><code>hist3=ggplot(data=datos, aes(writing)) + geom_histogram(binwidth=5, color=&quot;gray&quot;, aes(fill=education))+ labs(title=&quot;Notas de Escritura vs Educación de Padres&quot;)+ labs(x=&quot;Notas de Escritura&quot;, y=&quot;Frecuencia&quot;) 
+hist3</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+</div>
+<div id="observaciones-de-los-histogramas" class="section level3">
+<h3>Observaciones de los histogramas</h3>
+<p>En los <strong>histogramas</strong> de las notas por asignatura de los grupos separados por educación de los padres se confirma graficamente lo que se extrajo del análisis de medias, medianas y análisis de cuartiles: que el grupo de estudiantes de <strong>master’s degree</strong> posee una mayor proporción de notas más altas que oscilan entre 55-67, gráficamente se muestra con histograma relativamente más uniforme que los demás grupos en todas las asignaturas.</p>
+</div>
+<div id="diagramas-de-caja-y-bigote" class="section level3">
+<h3>Diagramas de caja y bigote</h3>
+<p>Para este apartado usamos el comando **<em>ggplot2</em> que permite una mejor visualización. Se agrega una instrucción adicional para que marque con un punto la media del grupo, pudiendo comparar la mediana de todos los grupos separados por el nivel de educación de los padres con respecto al grupo total. Se presentan 3 gráficos, uno por cada asignatura.</p>
+<pre class="r"><code>box1=ggplot(datos, aes(education, math, color = education)) + geom_boxplot() + labs(title=&quot;Notas de Matemáticas vs Educación de Padres&quot;)+ labs(x=&quot;Educación de Padres&quot;, y=&quot;Notas de Matemáticas&quot;) + stat_summary(fun.y=mean, geom=&quot;point&quot;, shape=18,size=3, color=&quot;red&quot;)
+box1</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<pre class="r"><code>box2=ggplot(datos, aes(education, reading, color = education)) + geom_boxplot() + labs(title=&quot;Notas de Lectura vs Educación de Padres&quot;)+ labs(x=&quot;Educación de Padres&quot;, y=&quot;Notas de Lectura&quot;) + stat_summary(fun.y=mean, geom=&quot;point&quot;, shape=18,size=3, color=&quot;green&quot;)
+box2</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<pre class="r"><code>box3=ggplot(datos, aes(education, writing, color = education)) + geom_boxplot() + labs(title=&quot;Notas de Escritura vs Educación de Padres&quot;)+ labs(x=&quot;Educación de Padres&quot;, y=&quot;Notas de Escritura&quot;) + stat_summary(fun.y=mean, geom=&quot;point&quot;, shape=18,size=3, color=&quot;blue&quot;)
+box3</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="observaciones-de-los-diagramas-de-caja-y-bigote" class="section level3">
+<h3>Observaciones de los diagramas de caja y bigote</h3>
+<p>En los <strong>diagramas de caja y bigote</strong>, en el caso de las notas de matemáticas, el grupo de estudiantes con padres que tienen <strong>master’s degree</strong> es el poseedor la mediana y el primer cuartil más alto con respecto a los demás grupos. En las demás asignaturas se sigue observando el liderazgo del grupo <strong>master degree</strong> del primer cuartil más alto con respecto a los demás grupos sin embargo en las notas de lectura y escritura su mediana es muy similar a la media del grupo en general.</p>
+</div>
+<div id="matriz-de-correlacion-de-los-datos" class="section level3">
+<h3>Matriz de correlación de los datos</h3>
+<p>Para calcular y mostrar la matriz de correlación se usa el comando <strong>corrplot</strong>, se aplica sólo a las notas por asignatura, se elimina la diagonal de la matriz que no aporta información relevante y se muestra sólo la matriz diagonal superior por la misma razón anterior.</p>
+<pre class="r"><code>corrplot(cor(datos[,6:8]), method=&quot;color&quot;, addCoef.col = &quot;white&quot;, type=&quot;upper&quot;, diag=FALSE, tl.col=&quot;black&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
+<div id="observaciones-de-la-matriz-de-correlacion" class="section level3">
+<h3>Observaciones de la matriz de Correlación</h3>
+<p>La <strong>matriz de correlación</strong> de las notas de todas las asignaturas denota que la <strong>correlación más fuerte se encuentra entre las notas de lectura y escritura</strong>, cuyo coeficiente de correlacion es de <strong>0.95</strong>, en comparación al que exhibe <strong>la relación de matemática con lectura y escritura que ronda el 0.8</strong>. Se destaca que <strong>la correlacion entre matematicas y lectura es ligeramente superior a la de matemática y escritura</strong>. Lo que podría implicar que quienes sacan mejores notas en matematicas suelen salir mejor en lectura en comparación con escritura.</p>
+</div>
+<div id="prueba-grafica-de-normalidad" class="section level3">
+<h3>Prueba gráfica de normalidad</h3>
+<p>Esta prueba nos permite identificar si los datos se ajustan a una distribución normal o que tanto se aproximan a esta. Se utilizan los comandos <strong>qqnorm</strong> y <strong>qqline</strong> para extraer las conclusiones. Se muestran 18 gráficos agrupados en 3 ventanas con 6 secciones. Cada ventana incluye las pruebas por asignatura de acuerdo a los distintos niveles de educación de los padres.</p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$math, main= &quot;Math Associate&#39;s Degree&quot;)
+qqline(datos1$math)
+
+qqnorm(datos2$math, main= &quot;Math Bachelor&#39;s Degree&quot;)
+qqline(datos2$math)
+
+qqnorm(datos3$math, main= &quot;Math High School&quot;)
+qqline(datos3$math)
+
+qqnorm(datos4$math, main= &quot;Math Master&#39;s Degree&quot;)
+qqline(datos4$math)
+
+qqnorm(datos5$math, main= &quot;Math Some College&quot;)
+qqline(datos5$math)
+
+qqnorm(datos6$math, main= &quot;Math Some High School&quot;)
+qqline(datos6$math)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$reading, main= &quot;Reading Associate&#39;s Degree&quot;)
+qqline(datos1$reading)
+
+qqnorm(datos2$reading, main= &quot;Reading Bachelor&#39;s Degree&quot;)
+qqline(datos2$reading)
+
+qqnorm(datos3$reading, main= &quot;Reading High School&quot;)
+qqline(datos3$reading)
+
+qqnorm(datos4$reading, main= &quot;Reading Master&#39;s Degree&quot;)
+qqline(datos4$reading)
+
+qqnorm(datos5$reading, main= &quot;Reading Some College&quot;)
+qqline(datos5$reading)
+
+qqnorm(datos6$reading, main= &quot;Reading Some High School&quot;)
+qqline(datos6$reading)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$writing, main= &quot;Writing Associate&#39;s Degree&quot;)
+qqline(datos1$writing)
+
+qqnorm(datos2$writing, main= &quot;Writing Bachelor&#39;s Degree&quot;)
+qqline(datos2$writing)
+
+qqnorm(datos3$writing, main= &quot;Writing High School&quot;)
+qqline(datos3$writing)
+
+qqnorm(datos4$writing, main= &quot;Writing Master&#39;s Degree&quot;)
+qqline(datos4$writing)
+
+qqnorm(datos5$writing, main= &quot;Writing Some College&quot;)
+qqline(datos5$writing)
+
+qqnorm(datos6$writing, main= &quot;Writing Some High School&quot;)
+qqline(datos6$writing)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+</div>
+<div id="observaciones-de-la-prueba-grafica-de-normalidad" class="section level3">
+<h3>Observaciones de la prueba gráfica de normalidad</h3>
+<p>Al observar las <strong>pruebas de normalidad</strong> de todos los grupos separados por el nivel de educacion de los padres para todas las asignaturas se nota que todas pasan la prueba de normalidad de forma aceptable. Cabe mencionar que solo un grupo muestra una forma un ligeramente menos alejada de la normalidad y esto se observa en las notas de <strong>matemáticas</strong> del grupo de estudiantes con padres que tienen <strong>master’s degree</strong>.</p>
+</div>
+<div id="observaciones-finales" class="section level3">
+<h3>Observaciones Finales</h3>
+<p>El grupo que lidera a todos con respecto a las notas es de estudiantes con padres que tienen <strong>master’s degree</strong>,cuya media y mediana son más altas en todas las asignaturas, así como también el primer cuartil mas alto. En contraposición el grupo que lidera las notas más bajas es el grupo de estudiantes cuyos padres tienen <strong>high school</strong>. Todas las variables numéricas que corresponden a las notas de las asignaturas poseen una fuerte correlacion positva y se ajustan bastante bien a la distribucion normal.</p>
+<p>Podría decirse que las notas de matemáticas son las que menor relación guardan con las otras notas, viendo casi siempre estas graficas en una nube de puntos, relativamente, dispersa en contraste con las otras relaciones. Mientras que las notas de lectura y escritura mantienen en todas las agrupaciones de estudiantes una relación bastante estrecha, representado por medio de una nube de puntos muy condensada. Finalmente, todas las relaciones entre las diferentes notas de las diferentes agrupaciones mantiene una relación directamente proporcional entre ellas, notable a simple vista en los gráfico, además se presar valores, relativamente, aislados de la nube de puntos, más frecuentemente en el caso de las matrices de distribución para las notas de matemáticas. En conclusión se tiene que las relaciones entre las notas de los exámenes que poseen los estudiantes se encuentran notoriamente relacionadas entre sí en todas las distintas agrupaciones de estudiantes según el nivel de educación de sus padres.</p>
+</div>
+</div>
+</div>
+<div id="calculo-de-probabilidades-con-lenguaje-r" class="section level1">
+<h1>Cálculo de probabilidades con lenguaje R</h1>
+<p>Esta sección tiene como objetivo simular secuencias de números que se ajusten a las distribuciones normal, binomial, chi-cuadrado y t-student y calcular determinadas probabilidades con tales distribuciones.</p>
+<div id="simulacion-de-datos-que-siguen-una-distribucion-normal" class="section level2">
+<h2>Simulación de datos que siguen una distribución normal</h2>
+<p>Generamos 15 números aleatorios que siguen distribución normal N(25,5)</p>
+<pre class="r"><code>nx=rnorm(100,25,sqrt(5))</code></pre>
+<pre class="r"><code>#Prueba gráfica de normalidad
+qqnorm(nx, main = &quot;Prueba de normalidad de los valores simulados&quot;)
+qqline(nx)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<pre class="r"><code>hist(nx,freq=F,ylim=c(0.0,0.3), main=&quot;Histograma de nuestros datos vs la curva normal&quot;)
+curve(dnorm(x,mean=25,sd=sqrt(5)),add=T)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-24-2.png" width="672" /></p>
+<pre class="r"><code>plot(density(nx),col=&quot;red&quot;,ylim=c(0.0,0.3), main=&quot;Densidad de nuestros datos vs la curva normal&quot;)
+curve(dnorm(x,mean=25,sd=sqrt(5)),add=T, col=&quot;blue&quot;)
+abline(v=mean(nx))</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-24-3.png" width="672" /></p>
+<pre class="r"><code>#Gráfica de la función de densidad 
+curve(dnorm(x,25,sqrt(5)),xlim=c(10,40),ylab=&quot;f(x)&quot;,xlab=&quot;x&quot;, main=&quot;Curva Normal Generalizada\n media=25 y var=5&quot;, col=&quot;blue&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-24-4.png" width="672" /></p>
+</div>
+<div id="calculo-de-probabilidades-de-la-distribucion-normal-n255" class="section level2">
+<h2>Cálculo de probabilidades de la distribución normal N(25,5)</h2>
+<pre class="r"><code>#Se calculan las probabilidades considerando una distribución normal de media 25 y varianza 5
+1-pnorm(12,25,sqrt(5))  # Observación: este valor arroja 1 ya que la probabilidad 12 es tan pequeña que es casi cero</code></pre>
+<pre><code>## [1] 1</code></pre>
+<pre class="r"><code>pnorm(32,25,sqrt(5))-pnorm(17,25,sqrt(5))</code></pre>
+<pre><code>## [1] 0.9989541</code></pre>
+<pre class="r"><code>pnorm(25,25,sqrt(5))</code></pre>
+<pre><code>## [1] 0.5</code></pre>
+<pre class="r"><code>#Se calculan los valores que dan determinada probabilidad en una distribución normal de media 25 y varianza 5
+
+#Valor k tal que a la derecha hay un área de 0.05 a la derecha
+qnorm(1-0.05,25,sqrt(5))</code></pre>
+<pre><code>## [1] 28.678</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.025 a la derecha
+qnorm(1-0.025,25,sqrt(5))</code></pre>
+<pre><code>## [1] 29.38261</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.95 a la derecha
+qnorm(1-0.95,25,sqrt(5))</code></pre>
+<pre><code>## [1] 21.322</code></pre>
+</div>
+<div id="caculo-de-probabilidades-de-la-distribucion-binomial-b2000-4.2" class="section level2">
+<h2>Cáculo de probabilidades de la distribución binomial B(2000, 4.2%)</h2>
+<pre class="r"><code>#Secuencia de 2000 números aleatorios binomiales con n=2000 y p=0.042#
+bin=rbinom(2000,1,0.042)
+
+#Tabla de frecuencias para los artículos con defectos
+require(&quot;plyr&quot;)</code></pre>
+<pre><code>## Loading required package: plyr</code></pre>
+<pre class="r"><code>bin=as.factor(bin)
+bin=revalue(bin, c(&quot;0&quot;=&quot;No defectuoso&quot;, &quot;1&quot;=&quot;Defectuoso&quot;))
+table(bin)</code></pre>
+<pre><code>## bin
+## No defectuoso    Defectuoso 
+##          1925            75</code></pre>
+<pre class="r"><code>#Se grafican pies de torta para las tablas obtenidas anteriormente
+porcentaje= round(100*(table(bin))/sum(table(bin)),2)
+lab=paste(porcentaje,&quot;%&quot;)
+pie(table(bin), col=rainbow(2), labels=lab, main=&quot;Calidad de Artículos&quot;, border=&quot;white&quot;)
+legend(&quot;topleft&quot;, legend=c(&quot;No defectuoso&quot;, &quot;Defectuoso&quot;), fill=rainbow(2))</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<pre class="r"><code>#Se grafican diagramas de torta usando el paquete plotrix y el comando pie3D
+pie3D(table(bin),explode=0.2, labels=lab)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-27-2.png" width="672" /></p>
+<pre class="r"><code>#Calculo de probabilidades usando la distribución binomial
+1-pbinom(4,120,0.042)</code></pre>
+<pre><code>## [1] 0.5703893</code></pre>
+<pre class="r"><code>#Cálculo usando directamente la distribución binomial
+sum(dbinom(7:10,120,0.042))</code></pre>
+<pre><code>## [1] 0.2280986</code></pre>
+<pre class="r"><code>#Se grafica la función de densidad de la distribución binomial ajustada a los parámetros solicitados 
+plot(density(as.numeric(bin)),type=&quot;h&quot;,xlab=&quot;X Artículos&quot;,ylab=&quot;Artículos con defectos&quot;,main=&quot;Función de Probabilidad B(2000,0.042)&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
+</div>
+<div id="calculo-de-probabilidades-de-la-distribucion-chi-cuadrado-con-23-grados-de-libertad" class="section level2">
+<h2>Cálculo de probabilidades de la distribución chi-cuadrado con 23 grados de libertad</h2>
+<pre class="r"><code>#Secuencia de 150 números aleatorios chi cuadrado#
+chi &lt;- rchisq(150,23)
+chi</code></pre>
+<pre><code>##   [1] 20.683591 16.526107 16.191636 34.128520 33.617046 17.357132 15.320402
+##   [8] 48.356958 28.936878 31.414154 19.878774 16.141701 19.851714 20.962049
+##  [15] 32.275530 15.019650 28.863145 15.538216 20.912568 19.845526 15.694999
+##  [22] 24.455471 31.466180 20.716574 12.273022 19.278855 25.414175 23.525848
+##  [29] 22.078696 17.076605 25.262574 24.464516 19.344919 26.834028 33.951405
+##  [36] 22.386672 13.377922 15.724776 22.185038 21.086405  7.977798 22.119488
+##  [43] 18.538242 20.523706 26.913182 12.239452 17.137770 26.346440 22.934356
+##  [50] 16.119400 22.948762 35.465842 14.762587 20.446958 31.362089 20.320737
+##  [57] 28.100892 20.875465 28.064709 15.776679 16.621115 37.056911 26.883095
+##  [64] 23.414134 14.665786 21.924046 24.919788 28.771286 30.239914 20.134215
+##  [71] 24.484753 21.681986 12.127055 27.764618 20.688744 22.883680 44.683302
+##  [78] 19.086285 12.481151 26.353950 23.041336 32.196935 25.768763 21.387320
+##  [85] 29.219996 26.422411 26.446651 18.816814 20.890991 16.686125 25.277226
+##  [92] 39.975984 18.030319 19.830154 17.920245 24.234304 21.233273 24.784822
+##  [99] 43.454592 18.349069 18.998850 19.889773 23.247776 38.773643 22.408940
+## [106] 24.383409 24.931342 12.293517 35.850746 19.583389 13.993617 24.613335
+## [113] 11.022261 31.289974 34.374591 14.052279 30.519725 24.941638 20.279422
+## [120] 27.874312 32.145114 24.569056 11.530843 30.848200 32.706497 30.632874
+## [127] 23.355813 28.285696 33.750374 18.945273 22.465164 17.813796 18.381268
+## [134] 20.670421 21.243845 21.939100 24.029123 11.361097 32.329192 26.210807
+## [141] 17.403454 35.923948 33.006663 21.241424 13.658452  8.272714 20.407523
+## [148] 28.523722 27.541194 32.157561</code></pre>
+<pre class="r"><code>#Función de densidad chi cuadrado#
+curve(dchisq(x,df = 23),xlim=c(0,100),xlab=&quot;U&quot;,ylab=&quot;f(U)&quot;, main=&quot;Función de densidad chi-cuadrada\n grados de libertad = 23&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<pre class="r"><code>#Cálculo de proababilidad usando la distribución chi cuadrado
+
+
+#P(U&gt;17.75)
+1-pchisq(17.75,23)</code></pre>
+<pre><code>## [1] 0.7709052</code></pre>
+<pre class="r"><code>#P(31.5&lt;U&lt;22.4)
+pchisq(31.5,23)-pchisq(22.4,23)</code></pre>
+<pre><code>## [1] 0.3852298</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.05 a la derecha
+qchisq(1-0.05,23)</code></pre>
+<pre><code>## [1] 35.17246</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.99 a la derecha
+qchisq(1-0.99,23)</code></pre>
+<pre><code>## [1] 10.19572</code></pre>
+</div>
+<div id="calculo-de-probabilidades-de-la-distribucion-t-student-con-37-grados-de-libertad" class="section level2">
+<h2>Cálculo de probabilidades de la distribución t-student con 37 grados de libertad</h2>
+<pre class="r"><code>#Secuencia de números aleatorios t-student#
+t &lt;- rt(150,37)
+t</code></pre>
+<pre><code>##   [1] -0.40733338 -0.55713848  0.94079335 -0.79581998  2.18799236
+##   [6] -1.03503755  0.35162050 -1.56156461  0.77440936  0.82749563
+##  [11]  0.14394713  1.03825094  0.02917141  0.44350721  0.06382497
+##  [16] -0.26476334  0.62255700  0.21206465 -1.63702736  0.41279844
+##  [21]  1.71009494  0.23289658 -1.21502243 -0.60100409  1.87147554
+##  [26] -0.17682178  0.27062870  0.41747743  2.19137667  0.73977699
+##  [31] -1.20326703  1.34165231 -1.48219029  0.13984834 -0.38259033
+##  [36] -0.31212100 -1.83278038  0.82162262 -0.18585404  0.77355929
+##  [41] -0.05769556 -1.29892873  0.59149518 -0.19247340  1.36465739
+##  [46] -0.11925449  0.28376297 -0.44073066  2.99198446  0.19235763
+##  [51]  0.54433478 -1.19708834 -0.29395233 -0.13457060 -1.97871008
+##  [56]  0.43072109 -2.30804393 -0.58488522 -1.17070989  0.48746729
+##  [61] -0.17585619  1.06844830 -0.03503306 -1.10827152  0.83809341
+##  [66]  1.30665690 -1.41996627  0.42023922  0.16245316  0.71705607
+##  [71]  0.51064661 -2.68344217 -0.14915916 -1.88379943  0.87667724
+##  [76]  1.36524831  0.01961514 -0.13454500 -1.10407376 -0.63012925
+##  [81]  0.74047261 -0.14501327 -1.13349980 -0.34641686 -1.85522829
+##  [86] -2.04361835  0.72309977  1.49156454 -1.11671000 -0.48340430
+##  [91]  0.73505329 -3.23955727  0.82853613  2.59232575  0.29761492
+##  [96]  1.54869620  1.62622286 -0.06543556 -1.24209005  0.79831123
+## [101]  1.27753374  1.33215732 -1.15024788  1.63317292 -1.30479969
+## [106] -1.05268944  0.69408437  0.38626241 -0.05707500  1.25889220
+## [111] -2.16431014  0.80701187 -1.94528285  1.75323663 -0.54549900
+## [116] -0.87903578 -0.94909849 -0.78742262  0.79912224 -0.97545121
+## [121]  0.51399582  0.50025146  0.71453977 -1.26855604 -0.85654723
+## [126]  0.94625641 -0.91788912 -0.22641161  0.63117414 -1.67717395
+## [131] -1.16514959 -1.25409276  1.21343906  0.15769927 -1.18453896
+## [136] -0.66534954 -0.40774615 -0.33551604  1.94291999 -0.22313616
+## [141] -0.96707110  0.42053570 -0.72013495 -0.34890356  0.29118011
+## [146] -1.87900859 -1.82454752 -0.93012912 -1.13582331  0.45827947</code></pre>
+<pre class="r"><code>#Función de densidad t-student#
+curve(dt(x,df = 37),xlim=c(-5,5),xlab=&quot;T&quot;,ylab=&quot;f(T)&quot;, main=&quot;Función de densidad T-Student\n grados de libertad = 37&quot;)</code></pre>
+<p><img src="r_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>#Cálculo de probabilidades usando la distribución t-student
+
+#P(T&gt;17.75)
+1-pt(1.43,37)</code></pre>
+<pre><code>## [1] 0.08055383</code></pre>
+<pre class="r"><code>#P(-0.57&lt;T&lt;0.52)
+pt(0.52,37)-pt(-0.57,37)</code></pre>
+<pre><code>## [1] 0.4108581</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.025 a la derecha
+qt(1-0.025,37)</code></pre>
+<pre><code>## [1] 2.026192</code></pre>
+<pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.095 a la derecha
+qt(1-0.095,37)</code></pre>
+<pre><code>## [1] 1.335101</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
