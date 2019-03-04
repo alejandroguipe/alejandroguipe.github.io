@@ -9,6 +9,8 @@ navbar:
       href: r.html
     - text: "Python"
       href: python.html
+    - text: "Javascript"
+      href: javascript.html
     - text: "Contacto"
       href: about.html
       

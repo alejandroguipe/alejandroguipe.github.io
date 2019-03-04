@@ -11,7 +11,7 @@
 
 
 
-<title>Lenguaje R</title>
+<title>R</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -288,6 +288,9 @@ $(document).ready(function () {
   <a href="python.html">Python</a>
 </li>
 <li>
+  <a href="javascript.html">Javascript</a>
+</li>
+<li>
   <a href="about.html">Contacto</a>
 </li>
       </ul>
@@ -302,16 +305,17 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Lenguaje R</h1>
+<h1 class="title toc-ignore">R</h1>
 
 </div>
 
 
-<div id="analisis-exploratorio-de-datos-con-lenguaje-r" class="section level1">
-<h1>Análisis Exploratorio de Datos con lenguaje R</h1>
+<div id="analisis-exploratorio-de-datos-con-lenguaje-r" class="section level2">
+<h2>Análisis Exploratorio de Datos con lenguaje R</h2>
 <p>El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados.</p>
 <p>La base de datos que se utiliza está disponible en <a href="https://www.kaggle.com/spscientist/students-performance-in-exams" class="uri">https://www.kaggle.com/spscientist/students-performance-in-exams</a> (debes registrarte para descargar). Dicha base de datos se encuentra alojada en el archivo StudentsPerformance.csv e incluye las notas de tres exámenes (matemática, lectura y escritura) para un grupo de estudiantes. Adicionalmente, se proporciona información demográfica de los estudiantes y sus padres, así como sobre su desempeño escolar.</p>
 <p>A partir de la base de datos y el análisis exploratorio de datos se hace énfasis en entender las diferencias descriptivas y la relación entre variables dividiendo la base de datos por el nivel de educación de los padres. Es decir, se ejecuta un análisis descriptivo tanto de las notas de los exámenes, como de las demás variables de las bases de datos, separando por el nivel de educación de los padres.</p>
+</div>
 <div id="preparativos" class="section level2">
 <h2>Preparativos</h2>
 <p>Para realizar los cálculos y mostrar las diversas gráficas se requieren de diversos paquetes con los que cuenta el lenguaje R para estas tareas. El paquete <strong>“ggplot2”</strong> es un potente paquete de graficación y visualización de datos. El paquete <strong>“corrplot”</strong> es requerido para el cálculo y la graficación de la matriz de correlación de un conjunto de datos. El paquete <strong>“plyr”</strong> es requerido para la manipulación de datos y subconjunntos de los mismo. Por último El paquete <strong>“plotrix”</strong> es requerido para la graficación de diagramas de torta en 3D.</p>
@@ -709,7 +713,6 @@ qqline(datos6$writing)</code></pre>
 <p>Podría decirse que las notas de matemáticas son las que menor relación guardan con las otras notas, viendo casi siempre estas graficas en una nube de puntos, relativamente, dispersa en contraste con las otras relaciones. Mientras que las notas de lectura y escritura mantienen en todas las agrupaciones de estudiantes una relación bastante estrecha, representado por medio de una nube de puntos muy condensada. Finalmente, todas las relaciones entre las diferentes notas de las diferentes agrupaciones mantiene una relación directamente proporcional entre ellas, notable a simple vista en los gráfico, además se presar valores, relativamente, aislados de la nube de puntos, más frecuentemente en el caso de las matrices de distribución para las notas de matemáticas. En conclusión se tiene que las relaciones entre las notas de los exámenes que poseen los estudiantes se encuentran notoriamente relacionadas entre sí en todas las distintas agrupaciones de estudiantes según el nivel de educación de sus padres.</p>
 </div>
 </div>
-</div>
 <div id="calculo-de-probabilidades-con-lenguaje-r" class="section level1">
 <h1>Cálculo de probabilidades con lenguaje R</h1>
 <p>Esta sección tiene como objetivo simular secuencias de números que se ajusten a las distribuciones normal, binomial, chi-cuadrado y t-student y calcular determinadas probabilidades con tales distribuciones.</p>
@@ -759,14 +762,13 @@ qnorm(1-0.95,25,sqrt(5))</code></pre>
 bin=rbinom(2000,1,0.042)
 
 #Tabla de frecuencias para los artículos con defectos
-require(&quot;plyr&quot;)</code></pre>
-<pre><code>## Loading required package: plyr</code></pre>
-<pre class="r"><code>bin=as.factor(bin)
+require(&quot;plyr&quot;)
+bin=as.factor(bin)
 bin=revalue(bin, c(&quot;0&quot;=&quot;No defectuoso&quot;, &quot;1&quot;=&quot;Defectuoso&quot;))
 table(bin)</code></pre>
 <pre><code>## bin
 ## No defectuoso    Defectuoso 
-##          1925            75</code></pre>
+##          1936            64</code></pre>
 <pre class="r"><code>#Se grafican pies de torta para las tablas obtenidas anteriormente
 porcentaje= round(100*(table(bin))/sum(table(bin)),2)
 lab=paste(porcentaje,&quot;%&quot;)
@@ -791,28 +793,28 @@ plot(density(as.numeric(bin)),type=&quot;h&quot;,xlab=&quot;X Artículos&quot;,y
 <pre class="r"><code>#Secuencia de 150 números aleatorios chi cuadrado#
 chi &lt;- rchisq(150,23)
 chi</code></pre>
-<pre><code>##   [1] 20.683591 16.526107 16.191636 34.128520 33.617046 17.357132 15.320402
-##   [8] 48.356958 28.936878 31.414154 19.878774 16.141701 19.851714 20.962049
-##  [15] 32.275530 15.019650 28.863145 15.538216 20.912568 19.845526 15.694999
-##  [22] 24.455471 31.466180 20.716574 12.273022 19.278855 25.414175 23.525848
-##  [29] 22.078696 17.076605 25.262574 24.464516 19.344919 26.834028 33.951405
-##  [36] 22.386672 13.377922 15.724776 22.185038 21.086405  7.977798 22.119488
-##  [43] 18.538242 20.523706 26.913182 12.239452 17.137770 26.346440 22.934356
-##  [50] 16.119400 22.948762 35.465842 14.762587 20.446958 31.362089 20.320737
-##  [57] 28.100892 20.875465 28.064709 15.776679 16.621115 37.056911 26.883095
-##  [64] 23.414134 14.665786 21.924046 24.919788 28.771286 30.239914 20.134215
-##  [71] 24.484753 21.681986 12.127055 27.764618 20.688744 22.883680 44.683302
-##  [78] 19.086285 12.481151 26.353950 23.041336 32.196935 25.768763 21.387320
-##  [85] 29.219996 26.422411 26.446651 18.816814 20.890991 16.686125 25.277226
-##  [92] 39.975984 18.030319 19.830154 17.920245 24.234304 21.233273 24.784822
-##  [99] 43.454592 18.349069 18.998850 19.889773 23.247776 38.773643 22.408940
-## [106] 24.383409 24.931342 12.293517 35.850746 19.583389 13.993617 24.613335
-## [113] 11.022261 31.289974 34.374591 14.052279 30.519725 24.941638 20.279422
-## [120] 27.874312 32.145114 24.569056 11.530843 30.848200 32.706497 30.632874
-## [127] 23.355813 28.285696 33.750374 18.945273 22.465164 17.813796 18.381268
-## [134] 20.670421 21.243845 21.939100 24.029123 11.361097 32.329192 26.210807
-## [141] 17.403454 35.923948 33.006663 21.241424 13.658452  8.272714 20.407523
-## [148] 28.523722 27.541194 32.157561</code></pre>
+<pre><code>##   [1] 20.914971 20.162797 26.620397 32.803448 20.420719 15.242295 35.290515
+##   [8] 25.624894 30.197507 20.404050 31.315232 25.378236 18.468432 10.693727
+##  [15] 24.794739 24.288908 18.484748 25.588757 23.954777 16.763516 20.030524
+##  [22] 21.603562 18.116215 22.585208 28.887385 23.449135 26.929880 25.254002
+##  [29] 22.882757 19.985175 25.700488 28.062326 12.683067 32.021025 16.198970
+##  [36] 18.070482 15.086441 22.985263 24.999434 21.544645 26.197284 28.118621
+##  [43] 22.671547 24.122670 29.015331 13.798725 23.140114 31.919047 17.809441
+##  [50] 17.025119 20.746037 35.397138 31.682099 33.973917 15.185354 25.231602
+##  [57] 25.088290 16.896936 38.823123 22.117733 19.032854 37.126874 22.657154
+##  [64] 32.072409 19.004294 24.263836 20.112190 19.601997 32.046908 22.227811
+##  [71] 13.161207 26.241491 23.591052 21.262279 23.598080 21.673404 30.390609
+##  [78] 23.893561 25.137014 17.504538 25.599332 32.787330 17.828329 27.436101
+##  [85] 15.550035 20.784439 20.843711 34.175032 18.888568 28.326451 13.393725
+##  [92] 18.670686 15.255874 12.634674 18.242671 15.210304 19.186036 31.695338
+##  [99] 14.131837 27.500343 23.061158 26.603779 37.145520 20.587546 11.276680
+## [106] 25.836818 22.642886 21.731399 24.241828 22.231675 33.847025 14.619142
+## [113] 18.457441 13.912997 19.741065 17.378426  9.801684  8.159454 17.548292
+## [120] 14.460735 28.943558 20.710178 24.759208 24.733546 18.936281 24.284441
+## [127] 15.886562 14.037343 20.794558 29.035919 32.761267 16.243122 34.250415
+## [134] 16.010062 18.216735 19.977815 29.581518 27.480794 16.591461 31.103390
+## [141] 21.938596 19.667857 24.722471 17.359826 14.470216 15.605984 22.752877
+## [148] 20.282493 31.971026 26.254440</code></pre>
 <pre class="r"><code>#Función de densidad chi cuadrado#
 curve(dchisq(x,df = 23),xlim=c(0,100),xlab=&quot;U&quot;,ylab=&quot;f(U)&quot;, main=&quot;Función de densidad chi-cuadrada\n grados de libertad = 23&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
@@ -837,36 +839,36 @@ qchisq(1-0.99,23)</code></pre>
 <pre class="r"><code>#Secuencia de números aleatorios t-student#
 t &lt;- rt(150,37)
 t</code></pre>
-<pre><code>##   [1] -0.40733338 -0.55713848  0.94079335 -0.79581998  2.18799236
-##   [6] -1.03503755  0.35162050 -1.56156461  0.77440936  0.82749563
-##  [11]  0.14394713  1.03825094  0.02917141  0.44350721  0.06382497
-##  [16] -0.26476334  0.62255700  0.21206465 -1.63702736  0.41279844
-##  [21]  1.71009494  0.23289658 -1.21502243 -0.60100409  1.87147554
-##  [26] -0.17682178  0.27062870  0.41747743  2.19137667  0.73977699
-##  [31] -1.20326703  1.34165231 -1.48219029  0.13984834 -0.38259033
-##  [36] -0.31212100 -1.83278038  0.82162262 -0.18585404  0.77355929
-##  [41] -0.05769556 -1.29892873  0.59149518 -0.19247340  1.36465739
-##  [46] -0.11925449  0.28376297 -0.44073066  2.99198446  0.19235763
-##  [51]  0.54433478 -1.19708834 -0.29395233 -0.13457060 -1.97871008
-##  [56]  0.43072109 -2.30804393 -0.58488522 -1.17070989  0.48746729
-##  [61] -0.17585619  1.06844830 -0.03503306 -1.10827152  0.83809341
-##  [66]  1.30665690 -1.41996627  0.42023922  0.16245316  0.71705607
-##  [71]  0.51064661 -2.68344217 -0.14915916 -1.88379943  0.87667724
-##  [76]  1.36524831  0.01961514 -0.13454500 -1.10407376 -0.63012925
-##  [81]  0.74047261 -0.14501327 -1.13349980 -0.34641686 -1.85522829
-##  [86] -2.04361835  0.72309977  1.49156454 -1.11671000 -0.48340430
-##  [91]  0.73505329 -3.23955727  0.82853613  2.59232575  0.29761492
-##  [96]  1.54869620  1.62622286 -0.06543556 -1.24209005  0.79831123
-## [101]  1.27753374  1.33215732 -1.15024788  1.63317292 -1.30479969
-## [106] -1.05268944  0.69408437  0.38626241 -0.05707500  1.25889220
-## [111] -2.16431014  0.80701187 -1.94528285  1.75323663 -0.54549900
-## [116] -0.87903578 -0.94909849 -0.78742262  0.79912224 -0.97545121
-## [121]  0.51399582  0.50025146  0.71453977 -1.26855604 -0.85654723
-## [126]  0.94625641 -0.91788912 -0.22641161  0.63117414 -1.67717395
-## [131] -1.16514959 -1.25409276  1.21343906  0.15769927 -1.18453896
-## [136] -0.66534954 -0.40774615 -0.33551604  1.94291999 -0.22313616
-## [141] -0.96707110  0.42053570 -0.72013495 -0.34890356  0.29118011
-## [146] -1.87900859 -1.82454752 -0.93012912 -1.13582331  0.45827947</code></pre>
+<pre><code>##   [1] -0.69729784 -1.16340459  0.34542624 -0.87295208  0.31379892
+##   [6] -0.61263200  0.69669200  0.43685341  1.23939390 -1.14234821
+##  [11] -0.81097849 -0.88638578 -0.77499583 -0.48302438  0.40632079
+##  [16]  1.34353224  0.79438268 -0.02176859 -0.17629944 -1.16851394
+##  [21]  0.54641208 -0.10543867  0.83991225 -0.76101233  0.59858852
+##  [26]  0.83168867  1.23134740 -2.71380616  0.43476946  1.24770722
+##  [31]  0.20331791  1.05967047  0.37488257 -0.01655059  0.29121896
+##  [36] -1.47750472  0.66655113  1.44062047  0.61633493  0.30581395
+##  [41]  0.18805295  0.18239541 -0.52739196  0.01549020  0.35256092
+##  [46] -0.69488410 -0.42361068 -0.15411015  0.17578130 -0.66110748
+##  [51]  2.99638579  0.73676994 -0.96377473  0.35479337 -1.24928802
+##  [56] -1.21560258  0.01919899 -2.07208927 -0.71521514 -0.58506570
+##  [61] -0.36719457 -0.12345164  0.76157496  2.86371880  1.18388434
+##  [66]  1.25338357  1.04466598  0.89654905 -0.57961068 -0.92103211
+##  [71] -1.58891184 -0.05259704  0.17357271 -3.36151803 -1.17555043
+##  [76] -0.63879542  0.21255040  0.03876570  0.72343506  0.28280792
+##  [81]  0.51269509 -0.27114336  2.65527322 -0.48181057  0.41010066
+##  [86] -0.20430202 -1.53555369  1.53081435 -2.14868662 -0.04375473
+##  [91] -2.73455550  0.45968910  0.74317966 -1.65919802  1.04253604
+##  [96]  0.41617686 -1.86694590  0.36094642  0.32762598 -0.95511703
+## [101] -0.83259298  0.89729279 -0.95782007 -0.25999767 -0.79519741
+## [106]  0.07025464 -0.47753721  1.76941244  1.03315737  0.92315381
+## [111] -2.07758766  0.67961087 -0.12047288  1.33938809 -0.04949622
+## [116]  2.13359092 -0.20901462 -1.20375426  0.93749042  0.83688484
+## [121] -0.61830367  0.19338258 -1.17470324  0.92008756 -0.63593535
+## [126]  0.03080242 -0.69618087 -0.85079389 -0.32496858  0.45522091
+## [131]  1.48907153 -0.40617599  0.74430244  1.17711365  1.31557361
+## [136]  1.88737994 -0.35843325  0.17707026  0.68819958  2.11640154
+## [141]  0.26138888  1.45919304 -0.54063308 -0.76646565  0.01443753
+## [146]  0.09055992 -1.11471719 -1.57183166 -0.12056131 -0.29733040</code></pre>
 <pre class="r"><code>#Función de densidad t-student#
 curve(dt(x,df = 37),xlim=c(-5,5),xlab=&quot;T&quot;,ylab=&quot;f(T)&quot;, main=&quot;Función de densidad T-Student\n grados de libertad = 37&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>

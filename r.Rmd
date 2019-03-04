@@ -1,8 +1,8 @@
 ---
-title: "Lenguaje R"
+title: "R"
 ---
 
-#Análisis Exploratorio de Datos con lenguaje R
+##Análisis Exploratorio de Datos con lenguaje R
 
 El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados. 
 

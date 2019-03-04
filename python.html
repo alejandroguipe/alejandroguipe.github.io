@@ -288,6 +288,9 @@ $(document).ready(function () {
   <a href="python.html">Python</a>
 </li>
 <li>
+  <a href="javascript.html">Javascript</a>
+</li>
+<li>
   <a href="about.html">Contacto</a>
 </li>
       </ul>
@@ -307,11 +310,12 @@ $(document).ready(function () {
 </div>
 
 
-<div id="analisis-exploratorio-de-datos-con-lenguaje-r" class="section level1">
-<h1>Análisis Exploratorio de Datos con lenguaje R</h1>
+<div id="analisis-exploratorio-de-datos-con-python" class="section level2">
+<h2>Análisis Exploratorio de Datos con python</h2>
 <p>El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados.</p>
 <p>La base de datos que se utiliza está disponible en <a href="https://www.kaggle.com/spscientist/students-performance-in-exams" class="uri">https://www.kaggle.com/spscientist/students-performance-in-exams</a> (debes registrarte para descargar). Dicha base de datos se encuentra alojada en el archivo StudentsPerformance.csv e incluye las notas de tres exámenes (matemática, lectura y escritura) para un grupo de estudiantes. Adicionalmente, se proporciona información demográfica de los estudiantes y sus padres, así como sobre su desempeño escolar.</p>
 <p>A partir de la base de datos y el análisis exploratorio de datos se hace énfasis en entender las diferencias descriptivas y la relación entre variables dividiendo la base de datos por el nivel de educación de los padres. Es decir, se ejecuta un análisis descriptivo tanto de las notas de los exámenes, como de las demás variables de las bases de datos, separando por el nivel de educación de los padres.</p>
+</div>
 <div id="carga-y-reorganizacion-de-datos" class="section level2">
 <h2>Carga y reorganización de datos</h2>
 <p>A través de los siguientes comandos cargamos los datos del archivo StudentsPerformance.csv al data frame <strong>“df”</strong>, renombramos la columnas del data frame para facilitar lectura y escritura de código y separamos nuestra base de datos de acuerdo al nivel de educación de los padres en 6 conjuntos.</p>
@@ -625,11 +629,8 @@ from scipy.stats import norm
 import matplotlib.pyplot as plt
 plt.rcParams[&#39;figure.figsize&#39;] = (14.0, 10.0)
 ###
-plt.subplot(231)</code></pre>
-<pre><code>## C:\Users\ALEJAN~1\AppData\Local\Programs\Python\Python37\lib\site-packages\matplotlib\figure.py:98: MatplotlibDeprecationWarning: 
-## Adding an axes using the same arguments as a previous axes currently reuses the earlier instance.  In a future version, a new instance will always be created and returned.  Meanwhile, this warning can be suppressed, and the future behavior ensured, by passing a unique label to each axes instance.
-##   &quot;Adding an axes using the same arguments as a previous axes &quot;</code></pre>
-<pre class="python"><code>stats.probplot(df1[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
+plt.subplot(231)
+stats.probplot(df1[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-18-1.png" width="910" /></p>
 <pre class="python"><code>plt.subplot(232)
@@ -686,7 +687,6 @@ pylab.show()</code></pre>
 <h3>Observaciones Finales</h3>
 <p>El grupo que lidera a todos con respecto a las notas es de estudiantes con padres que tienen <strong>master’s degree</strong>,cuya media y mediana son más altas en todas las asignaturas, así como también el primer cuartil mas alto. En contraposición el grupo que lidera las notas más bajas es el grupo de estudiantes cuyos padres tienen <strong>high school</strong>. Todas las variables numéricas que corresponden a las notas de las asignaturas poseen una fuerte correlacion positva y se ajustan bastante bien a la distribucion normal.</p>
 <p>Podría decirse que las notas de matemáticas son las que menor relación guardan con las otras notas, viendo casi siempre estas graficas en una nube de puntos, relativamente, dispersa en contraste con las otras relaciones. Mientras que las notas de lectura y escritura mantienen en todas las agrupaciones de estudiantes una relación bastante estrecha, representado por medio de una nube de puntos muy condensada. Finalmente, todas las relaciones entre las diferentes notas de las diferentes agrupaciones mantiene una relación directamente proporcional entre ellas, notable a simple vista en los gráfico, además se presar valores, relativamente, aislados de la nube de puntos, más frecuentemente en el caso de las matrices de distribución para las notas de matemáticas. En conclusión se tiene que las relaciones entre las notas de los exámenes que poseen los estudiantes se encuentran notoriamente relacionadas entre sí en todas las distintas agrupaciones de estudiantes según el nivel de educación de sus padres.</p>
-</div>
 </div>
 </div>
 
