@@ -1,8 +1,9 @@
 ---
 title: "Python"
+toc: true
 ---
 
-##Análisis Exploratorio de Datos con python
+##Análisis exploratorio de datos con python
 
 El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados. 
 

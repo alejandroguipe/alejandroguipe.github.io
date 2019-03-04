@@ -4,6 +4,6 @@ title: "Introducción"
 
 Este sitio web está orientado a mostrar a través de diferentes lenguajes de programación algunas técnicas de análisis de exploración de datos, determinados cálculos matemáticos y estadísticos y el proceso que involucra la construcción de proyectos a pequeña y mediana escala que tengan el objetivo de dar solución a un problema concreto con el uso de algoritmos. 
 
-En la sección de **lenguaje R** se encuentran algunos procedmientos estándar que se le aplican a un conjunto de información para realizar análisis exploratorio de datos.
+En la sección de **R** se encuentran algunos procedmientos estándar que se le aplican a un conjunto de información para realizar análisis exploratorio de datos.
 
 En la sección **python** se encuentran algunos ténicas para el análisis exploratorio de datos, cálculo estadísticos o matemáticos que se pueden realizar con este lenguaje de programación
