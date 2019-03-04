@@ -1,0 +1,511 @@
+---
+title: "Lenguaje R"
+---
+
+#Análisis Exploratorio de Datos con lenguaje R
+
+El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados. 
+
+La base de datos que se utiliza está disponible en https://www.kaggle.com/spscientist/students-performance-in-exams (debes registrarte para descargar). Dicha base de datos se encuentra alojada en el archivo StudentsPerformance.csv e incluye las notas de tres exámenes (matemática, lectura y escritura) para un grupo de estudiantes. Adicionalmente, se proporciona información demográfica de los estudiantes y sus padres, así como sobre su desempeño escolar.
+
+A partir de la base de datos y el análisis exploratorio de datos se hace énfasis en entender
+las diferencias descriptivas y la relación entre variables dividiendo la base de datos por el nivel
+de educación de los padres. Es decir, se ejecuta un análisis descriptivo tanto de las notas de
+los exámenes, como de las demás variables de las bases de datos, separando por el nivel de educación
+de los padres. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##Preparativos 
+
+Para realizar los cálculos y mostrar las diversas gráficas se requieren de diversos paquetes con los que cuenta el lenguaje R para estas tareas. El paquete **"ggplot2"** es un potente paquete de graficación y visualización de datos. El paquete **"corrplot"** es requerido para el cálculo y la graficación de la matriz de correlación de un conjunto de datos. El paquete **"plyr"** es requerido para la manipulación de datos y subconjunntos de los mismo. Por último El paquete **"plotrix"** es requerido para la graficación de diagramas de torta en 3D.
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=TRUE, paged.print=FALSE}
+install.packages("ggplot2")
+install.packages("corrplot")
+install.packages("plyr")
+install.packages("plotrix")
+```
+
+
+## Carga y reorganización de datos
+
+A través de los siguientes comandos cargamos los datos del archivo StudentsPerformance.csv al data frame **"datos"**, renombramos la columnas del data frame para facilitar lectura y escritura de código y separamos nuestra base de datos de acuerdo al nivel de educación de los padres en 6 conjuntos.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+datos<-read.csv("StudentsPerformance.csv")
+
+colnames(datos)<-c("gender","race","education", "lunch", "testprep", "math","reading", "writing")
+
+datos1 <- datos[datos$education=="associate's degree",]
+datos2 <- datos[datos$education=="bachelor's degree",]
+datos3 <- datos[datos$education=="high school",]
+datos4 <- datos[datos$education=="master's degree",]
+datos5 <- datos[datos$education=="some college",]
+datos6 <- datos[datos$education=="some high school",]
+
+```
+
+## Resumen y visualización de la composición los datos
+
+A continuación se muestran algunos comandos que nos ayudan a entender la composición de nuestra base de datos. Con los comandos **head** y **tails** nos permiten ver las primeras y últimas 6 filas del data frame **"datos"**. El comando **names** observamos los nombres de las columnas de la matriz. El comando **str** lista el conjunto de variables que se encuentran en la base datos junto a algunos datos particulares que destacan el número y naturaleza de las variables. Por último, el comando **summary** vendría a ser el más útil y nos ofrece un resumen de las variables tanto numéricas como no numéricas, sus frecuencias, cantidad, media, mediana y valores máximos y mínimos. 
+
+```{r}
+
+head(datos)
+
+tail(datos)
+
+names(datos)
+
+str(datos)
+
+summary(datos)
+
+
+```
+
+
+## Análisis descriptivo de los datos
+
+### Medidas de tendencia central por nivel de educación de los padres
+
+```{r }
+summary(datos1) 
+summary(datos2)
+summary(datos3)
+summary(datos4)
+summary(datos5)
+summary(datos6)
+```
+
+### Observaciones de las medidas de tendencia central
+
+Analizando las **medidas de tendencia central** se encuentra que en todas las asignaturas **la media y mediana más alta** de todos los grupos separados por educación de los padres son las del grupo de los estudiantes que tienen padres con nivel de educación **"master's degree"**. Por otra parte, **la media y mediana más baja**, particularmente en la asignatura de matemáticas es la del grupo con padres que tienen nivel de educación **"asoociate's degree"**. En las asignaturas de lectura y escritura, la media y mediana más baja es la del grupo con padres que tienen nivel de educación **"high school"**.
+
+### Observaciones de las medidas de tendencia no central o análisis de cuartiles
+
+Analizando las **medidas de tendencia no central** se encuentra que el grupo de estudiantes con padres que tienen nivel educativo **"associate's degree"** aproximadamente el 75% de los estudiantes posee notas por encima de 57 en todas las asignaturas, aproximadamente el 50% por encima de 67 y aproximadamente el 25% por encima de 80.En el grupo de los estudiantes con padres que tienen **"bachelor's degree"** aproximadamente el 75% de los estudiantes posee notas por encima de 61 en todas las asignaturas, aproximadamente el 50% por encima de 68 y aproximadamente el 25% por encima de 79. En el grupo de los estudiantes con padres que tienen **"high school"** aproximadamente el 75% de los estudiantes posee notas por encima de 52 en todas las asignaturas, aproximadamente el 50% por encima de 63 y aproximadamente  el 25% por encima de 72. En el grupo de los estudiantes con padres que tienen **"master's degree"** aproximadamente el 75% de los estudiantes posee notas por encima de 55 en todas las asignaturas, aproximadamente el 50% por encima de 73 y aproximadamente el 25% por encima de 81. En el grupo de los estudiantes con padres que tienen **"some college"** aproximadamente  el 75% de los estudiantes posee notas por encima de 59 en todas las asignaturas, aproximadamente el 50% por encima de 67.5 y aproximadamente el 25% por encima de 76. En el grupo de los estudiantes con padres que tienen **"some high school"** aproximadamente el 75% de los estudiantes posee notas por encima de 54 en todas las asignaturas, aproximadamente el 50% por encima de 65 y aproximadamente el 25% por encima de 74. 
+
+### Observaciones de las medidas de desviación de las variables numéricas de acuerdo al nivel de educación de los padres
+
+Para este apartado usamosel comando **sd** para calcular la desviación estándar y se lo aplicamos solamente a las columnas de 6 a la 8 que contienene las notas de las asignaturas a cada uno de las base de datos separadas por eduación de los padres (datos1, datos2,...). El procedimiento que se usa es el siguiente: se contruye un vector por cada grupo de estudiantes separados por nivel de educación de los padres, el vector se compone de la desviación estándar de cada columna que corresponde a las notas de las asignaturas matemáticas, lectura y escritura, luego se contruye un data frame para mostrar toda la información de manera organizada
+
+```{r}
+sd1=c(sd(datos1[,6]),sd(datos1[,7]),sd(datos1[,8]))
+sd2=c(sd(datos2[,6]),sd(datos2[,7]),sd(datos2[,8]))
+sd3=c(sd(datos3[,6]),sd(datos3[,7]),sd(datos3[,8]))
+sd4=c(sd(datos4[,6]),sd(datos4[,7]),sd(datos4[,8]))
+sd5=c(sd(datos5[,6]),sd(datos5[,7]),sd(datos5[,8]))
+sd6=c(sd(datos6[,6]),sd(datos6[,7]),sd(datos6[,8]))
+
+notas=c("Notas de matemática", "Notas de Lectura", "Notas de escritura")
+datosd= data.frame(notas,sd1,sd2,sd3,sd4,sd5,sd6)
+colnames(datosd)=c("                  ","  SDAD  ","  SDBD  ", "  SDHS  ", "  SDMD  ", "  SDSC  ", "  SDSH  ") 
+datosd
+
+#SD: Desviación Estándar
+#SDAD: SD Associate's Degree
+#SDBD: SD Bachelor's Degree
+#SDHS: SD High School
+#SDMD: SD Master's Degree
+#SDSC: SD Some College
+#SDSH: SD Some High School
+```
+
+Con respecto a las **medidas de desviación** de los grupos separados por el nivel educativo de los padres se puede decir que el grupo con **notas más alejadas de la media en todas las asignaturas** es el de los estudiantes con padres que tienen nivel educativo **some high school**, y el grupo **con notas que menos se alejan de la media en matemáticas** es el grupo de estudiantes con padres que tienen educación **some college** y los que tienen **notas que menos se alejan de la media en las asignaturas de lectura y escritura** es el grupo de estudiantes con padres que tienen **master's degree** .
+
+## Análisis Gráfico
+
+### Matriz de dispersión 
+
+En este apartado mostraremos la matriz de dispersión de los datos a través del comando **pairs**, la matriz de dispersión muestra gráficamente el grado de correlación entre las variables, por medio de la diagonal y las columnas podemos encontrar el diagrama de dispersión que corresponde para cada par de variables. Se aplica este comando a cada base de datos separada de acuerdo al nivel de educación de los padres.
+
+```{r}
+pairs(datos1, main="MDD Associate's Degree")  
+pairs(datos2, main="MDD Bachelor's Degree")  
+pairs(datos3, main="MDD High School")  
+pairs(datos4, main="MDD Master's Degree")  
+pairs(datos5, main="MDD Some College") 
+pairs(datos6, main="MDD Some High School")  
+```
+
+### Observaciones de la matriz de dispersión 
+
+El patrón que se percibe en todos los grupos según el nivel de educación en **la matriz de dispersión** es una fuerte correlacion positiva entre las notas de lectura y escritura y también entre matematicas y demás asignaturas. Lo que implica que a mejores notas en lectura los estudiantes sacan mejores notas en escritura y viceversa. Tambien se puede decir que si los estudiantes sacan mejores notas en matemáticas sacan mejores en lectura y escritura, sin embargo esta última relación se ve mucho más débil que en el caso exclusivo de lectura y escritura.
+
+### Diagramas de dispersión de todas las asignaturas de acuerdo al nivel de educación de los padres
+
+A traves de las siguientes instrucciones consolidamos sólo para las variables numéricas (notas de matemáticas, lectura y escritura) y en 3 gráficos en lugar de 18 los diagramos de dispersión de acuerdo al nivel de educacion de los padres que están identificados por colores usando el paquete **ggplot2**.
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+require("ggplot2")
+```
+
+
+```{r}
+
+mdd1=ggplot(datos, aes(math,reading, color=education)) +geom_point() + stat_smooth(method = "loess", formula = y ~ x)+ labs(title="Diagrama de Dispersión Notas de Matemáticas vs Notas de Lectura")+ labs(x="Notas de Matemática", y="Notas de Lectura") 
+mdd1
+
+mdd2=ggplot(datos, aes(reading,writing, color=education)) +geom_point() + stat_smooth(method = "loess", formula = y ~ x) + labs(title="Diagrama de Dispersión Notas de Lectura vs Notas de Escritura")+ labs(x="Notas de Lectura", y="Notas de Escritura") 
+mdd2
+
+mdd3=ggplot(datos, aes(math,writing, color=education)) +geom_point() + stat_smooth(method = "loess", formula = y ~ x) + labs(title="Diagrama de Dispersión Notas de Matemática vs Notas de Escritura")+ labs(x="Notas de Lectura", y="Notas de Escritura") 
+mdd3
+
+```
+
+
+### Histogramas 
+
+Usando el comando **hist** podemos obtener los diferentes histogramas de las notas por cada asignatura de acuerdo al nivel de educación de los padres. Mostraremos 6 histogramas por pantalla usando el comando **layout** que organiza nuestra ventana de visualización en 6 secciones.
+
+
+```{r echo=TRUE}
+
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$math, main="Associate's Degree", xlab="Notas de Matemáticas", ylab="Frecuencia")
+hist(datos2$math, main="Bachelor's Degree", xlab="Notas de Matemáticas", ylab="Frecuencia")
+hist(datos3$math, main="High School", xlab="Notas de Matemáticas", ylab="Frecuencia")
+hist(datos4$math, main="Master's Degree", xlab="Notas de Matemáticas", ylab="Frecuencia")
+hist(datos5$math, main="Some College", xlab="Notas de Matemáticas", ylab="Frecuencia")
+hist(datos6$math, main="Some High School", xlab="Notas de Matemáticas", ylab="Frecuencia")
+
+```
+
+
+```{r}
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$reading, main="Associate's Degree", xlab="Notas de Lectura", ylab="Frecuencia")
+hist(datos2$reading, main="Bachelor's Degree", xlab="Notas de Lectura", ylab="Frecuencia")
+hist(datos3$reading, main="High School", xlab="Notas de Lectura", ylab="Frecuencia")
+hist(datos4$reading, main="Master's Degree", xlab="Notas de Lectura", ylab="Frecuencia")
+hist(datos5$reading, main="Some College", xlab="Notas de Lectura", ylab="Frecuencia")
+hist(datos6$reading, main="Some High School", xlab="Notas de Lectura", ylab="Frecuencia")
+
+```
+
+```{r}
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+hist(datos1$writing, main="Associate's Degree", xlab="Notas de Escritura", ylab="Frecuencia")
+hist(datos2$writing, main="Bachelor's Degree", xlab="Notas de Escritura", ylab="Frecuencia")
+hist(datos3$writing, main="High School", xlab="Notas de Escritura", ylab="Frecuencia")
+hist(datos4$writing, main="Master's Degree", xlab="Notas de Escritura", ylab="Frecuencia")
+hist(datos5$writing, main="Some College", xlab="Notas de Escritura", ylab="Frecuencia")
+hist(datos6$writing, main="Some High School", xlab="Notas de Escritura", ylab="Frecuencia")
+```
+
+Si usamos el paquete **ggplot2** podemos simplificar las instrucciones y mostrar en un sólo gráfico todos los histogramas de acuerdo al nivel de educación de los padres en 3 gráficos que corresponden a cada asignatura.
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+
+hist1=ggplot(data=datos, aes(math)) + geom_histogram(binwidth=5, color="gray", aes(fill=education))+ labs(title="Notas de Matemáticas vs Educación de Padres")+ labs(x="Notas de Matemática", y="Frecuencia") 
+hist1
+
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+hist2=ggplot(data=datos, aes(reading)) + geom_histogram(binwidth=5, color="gray", aes(fill=education))+ labs(title="Notas de Lectura vs Educación de Padres")+ labs(x="Notas de Lectura", y="Frecuencia") 
+hist2
+```
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+hist3=ggplot(data=datos, aes(writing)) + geom_histogram(binwidth=5, color="gray", aes(fill=education))+ labs(title="Notas de Escritura vs Educación de Padres")+ labs(x="Notas de Escritura", y="Frecuencia") 
+hist3
+```
+
+
+### Observaciones de los histogramas 
+
+En los **histogramas** de las notas por asignatura de los grupos separados por educación de los padres se confirma graficamente lo que se extrajo del análisis de medias, medianas y análisis de cuartiles: que el grupo de estudiantes de **master's degree** posee una mayor proporción de notas más altas que oscilan entre 55-67, gráficamente se muestra con histograma relativamente más uniforme que los demás grupos en todas las asignaturas.
+
+
+### Diagramas de caja y bigote 
+
+Para este apartado usamos el comando ***ggplot2* que permite una mejor visualización. Se agrega una instrucción adicional para que marque con un punto la media del grupo, pudiendo comparar la mediana de todos los grupos separados por el nivel de educación de los padres con respecto al grupo total. Se presentan 3 gráficos, uno por cada asignatura.
+
+```{r}
+
+box1=ggplot(datos, aes(education, math, color = education)) + geom_boxplot() + labs(title="Notas de Matemáticas vs Educación de Padres")+ labs(x="Educación de Padres", y="Notas de Matemáticas") + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="red")
+box1
+
+```
+
+```{r}
+
+box2=ggplot(datos, aes(education, reading, color = education)) + geom_boxplot() + labs(title="Notas de Lectura vs Educación de Padres")+ labs(x="Educación de Padres", y="Notas de Lectura") + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="green")
+box2
+```
+
+```{r}
+box3=ggplot(datos, aes(education, writing, color = education)) + geom_boxplot() + labs(title="Notas de Escritura vs Educación de Padres")+ labs(x="Educación de Padres", y="Notas de Escritura") + stat_summary(fun.y=mean, geom="point", shape=18,size=3, color="blue")
+box3
+```
+
+
+### Observaciones de los diagramas de caja y bigote 
+
+En los **diagramas de caja y bigote**, en el caso de las notas de matemáticas, el grupo de estudiantes con padres que tienen **master's degree** es el poseedor la mediana y el primer cuartil más alto con respecto a los demás grupos. En las demás asignaturas se sigue observando el liderazgo del grupo **master degree** del primer cuartil más alto con respecto a los demás grupos sin embargo en las notas de lectura y escritura su mediana es muy similar a la media del grupo en general.
+
+
+### Matriz de correlación de los datos
+
+Para calcular y mostrar la matriz de correlación se usa el comando **corrplot**, se aplica sólo a las notas por asignatura, se elimina la diagonal de la matriz que no aporta información relevante y se muestra sólo la matriz diagonal superior por la misma razón anterior.
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+require("corrplot")
+```
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE, paged.print=FALSE}
+corrplot(cor(datos[,6:8]), method="color", addCoef.col = "white", type="upper", diag=FALSE, tl.col="black")
+
+```
+
+
+### Observaciones de la matriz de Correlación
+
+
+La **matriz de correlación** de las notas de todas las asignaturas denota que la **correlación más fuerte se encuentra entre las notas de lectura y escritura**, cuyo coeficiente de correlacion es de **0.95**, en comparación al que exhibe **la relación de matemática con lectura y escritura que ronda el 0.8**. Se destaca que **la correlacion entre matematicas y lectura es ligeramente superior a la de matemática y escritura**. Lo que podría implicar que quienes sacan mejores notas en matematicas suelen salir mejor en lectura en comparación con escritura.
+
+
+### Prueba gráfica de normalidad
+
+Esta prueba nos permite identificar si los datos se ajustan a una distribución normal o que tanto se aproximan a esta. Se utilizan los comandos **qqnorm** y **qqline** para extraer las conclusiones. Se muestran 18 gráficos agrupados en 3 ventanas con 6 secciones. Cada ventana incluye las pruebas por asignatura de acuerdo a los distintos niveles de educación de los padres.
+
+
+```{r}
+
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$math, main= "Math Associate's Degree")
+qqline(datos1$math)
+
+qqnorm(datos2$math, main= "Math Bachelor's Degree")
+qqline(datos2$math)
+
+qqnorm(datos3$math, main= "Math High School")
+qqline(datos3$math)
+
+qqnorm(datos4$math, main= "Math Master's Degree")
+qqline(datos4$math)
+
+qqnorm(datos5$math, main= "Math Some College")
+qqline(datos5$math)
+
+qqnorm(datos6$math, main= "Math Some High School")
+qqline(datos6$math)
+
+```
+
+
+```{r}
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$reading, main= "Reading Associate's Degree")
+qqline(datos1$reading)
+
+qqnorm(datos2$reading, main= "Reading Bachelor's Degree")
+qqline(datos2$reading)
+
+qqnorm(datos3$reading, main= "Reading High School")
+qqline(datos3$reading)
+
+qqnorm(datos4$reading, main= "Reading Master's Degree")
+qqline(datos4$reading)
+
+qqnorm(datos5$reading, main= "Reading Some College")
+qqline(datos5$reading)
+
+qqnorm(datos6$reading, main= "Reading Some High School")
+qqline(datos6$reading)
+```
+
+
+```{r}
+layout(matrix(c(1:6), nrow=2, byrow=FALSE))
+
+qqnorm(datos1$writing, main= "Writing Associate's Degree")
+qqline(datos1$writing)
+
+qqnorm(datos2$writing, main= "Writing Bachelor's Degree")
+qqline(datos2$writing)
+
+qqnorm(datos3$writing, main= "Writing High School")
+qqline(datos3$writing)
+
+qqnorm(datos4$writing, main= "Writing Master's Degree")
+qqline(datos4$writing)
+
+qqnorm(datos5$writing, main= "Writing Some College")
+qqline(datos5$writing)
+
+qqnorm(datos6$writing, main= "Writing Some High School")
+qqline(datos6$writing)
+
+```
+
+### Observaciones de la prueba gráfica de normalidad
+
+Al observar las **pruebas de normalidad** de todos los grupos separados por el nivel de educacion de los padres para todas las asignaturas se nota que todas pasan la prueba de normalidad de forma aceptable. Cabe mencionar que solo un grupo muestra una forma un ligeramente menos alejada de la normalidad y esto se observa en las notas de **matemáticas** del grupo  de estudiantes con padres que tienen **master's degree**.
+
+
+### Observaciones Finales
+
+
+El grupo que lidera a todos con respecto a las notas es de estudiantes con padres que tienen **master's degree**,cuya media y mediana son más altas en todas las asignaturas, así como también el primer cuartil mas alto. En contraposición el grupo que lidera las notas más bajas es el grupo de estudiantes cuyos padres tienen **high school**. Todas las variables numéricas que corresponden a las notas de las asignaturas poseen una fuerte correlacion positva y se ajustan bastante bien a la distribucion normal.
+
+Podría decirse que las notas de matemáticas son las que menor relación guardan con las otras notas, viendo casi siempre estas graficas en una nube de puntos, relativamente, dispersa en contraste con las otras relaciones. Mientras que las notas de lectura y escritura mantienen en todas las agrupaciones de estudiantes una relación bastante estrecha, representado por medio de una nube de puntos muy condensada. Finalmente, todas las relaciones entre las diferentes notas de las diferentes agrupaciones mantiene una relación directamente proporcional entre ellas, notable a simple vista en los gráfico, además se presar valores, relativamente, aislados de la nube de puntos, más frecuentemente en el caso de las matrices de distribución para las notas de matemáticas. En conclusión se tiene que las relaciones entre las notas de los exámenes que poseen los estudiantes se encuentran notoriamente relacionadas entre sí en todas las distintas agrupaciones de estudiantes según el nivel de educación de sus padres.
+
+
+# Cálculo de probabilidades con lenguaje R
+
+Esta sección tiene como objetivo simular secuencias de números que se ajusten a las distribuciones normal, binomial, chi-cuadrado y t-student y calcular determinadas probabilidades con tales distribuciones.
+
+## Simulación de datos que siguen una distribución normal
+
+Generamos 15 números aleatorios que siguen distribución normal N(25,5)
+
+```{r}
+nx=rnorm(100,25,sqrt(5))
+```
+
+
+```{r}
+
+#Prueba gráfica de normalidad
+qqnorm(nx, main = "Prueba de normalidad de los valores simulados")
+qqline(nx)
+
+hist(nx,freq=F,ylim=c(0.0,0.3), main="Histograma de nuestros datos vs la curva normal")
+curve(dnorm(x,mean=25,sd=sqrt(5)),add=T)
+
+plot(density(nx),col="red",ylim=c(0.0,0.3), main="Densidad de nuestros datos vs la curva normal")
+curve(dnorm(x,mean=25,sd=sqrt(5)),add=T, col="blue")
+abline(v=mean(nx))
+
+#Gráfica de la función de densidad 
+curve(dnorm(x,25,sqrt(5)),xlim=c(10,40),ylab="f(x)",xlab="x", main="Curva Normal Generalizada\n media=25 y var=5", col="blue")
+
+```
+
+
+## Cálculo de probabilidades de la distribución normal N(25,5)
+
+```{r}
+#Se calculan las probabilidades considerando una distribución normal de media 25 y varianza 5
+1-pnorm(12,25,sqrt(5))  # Observación: este valor arroja 1 ya que la probabilidad 12 es tan pequeña que es casi cero
+pnorm(32,25,sqrt(5))-pnorm(17,25,sqrt(5))
+pnorm(25,25,sqrt(5))
+
+#Se calculan los valores que dan determinada probabilidad en una distribución normal de media 25 y varianza 5
+
+#Valor k tal que a la derecha hay un área de 0.05 a la derecha
+qnorm(1-0.05,25,sqrt(5))
+
+#Valor k tal que a la derecha hay un área de 0.025 a la derecha
+qnorm(1-0.025,25,sqrt(5))
+
+#Valor k tal que a la derecha hay un área de 0.95 a la derecha
+qnorm(1-0.95,25,sqrt(5))
+```
+
+
+## Cáculo de probabilidades de la distribución binomial B(2000, 4.2%)
+
+```{r message=FALSE, warning=FALSE, include=FALSE, paged.print=FALSE}
+require("plotrix")
+```
+
+
+```{r}
+#Secuencia de 2000 números aleatorios binomiales con n=2000 y p=0.042#
+bin=rbinom(2000,1,0.042)
+
+#Tabla de frecuencias para los artículos con defectos
+require("plyr")
+bin=as.factor(bin)
+bin=revalue(bin, c("0"="No defectuoso", "1"="Defectuoso"))
+table(bin)
+
+#Se grafican pies de torta para las tablas obtenidas anteriormente
+porcentaje= round(100*(table(bin))/sum(table(bin)),2)
+lab=paste(porcentaje,"%")
+pie(table(bin), col=rainbow(2), labels=lab, main="Calidad de Artículos", border="white")
+legend("topleft", legend=c("No defectuoso", "Defectuoso"), fill=rainbow(2))
+
+#Se grafican diagramas de torta usando el paquete plotrix y el comando pie3D
+pie3D(table(bin),explode=0.2, labels=lab)
+
+#Calculo de probabilidades usando la distribución binomial
+1-pbinom(4,120,0.042)
+
+
+#Cálculo usando directamente la distribución binomial
+sum(dbinom(7:10,120,0.042))
+
+#Se grafica la función de densidad de la distribución binomial ajustada a los parámetros solicitados 
+plot(density(as.numeric(bin)),type="h",xlab="X Artículos",ylab="Artículos con defectos",main="Función de Probabilidad B(2000,0.042)")
+
+```
+
+## Cálculo de probabilidades de la distribución chi-cuadrado con 23 grados de libertad
+
+```{r}
+
+#Secuencia de 150 números aleatorios chi cuadrado#
+chi <- rchisq(150,23)
+chi
+
+#Función de densidad chi cuadrado#
+curve(dchisq(x,df = 23),xlim=c(0,100),xlab="U",ylab="f(U)", main="Función de densidad chi-cuadrada\n grados de libertad = 23")
+
+#Cálculo de proababilidad usando la distribución chi cuadrado
+
+
+#P(U>17.75)
+1-pchisq(17.75,23)
+
+#P(31.5<U<22.4)
+pchisq(31.5,23)-pchisq(22.4,23)
+
+#Valor k tal que a la derecha hay un área de 0.05 a la derecha
+qchisq(1-0.05,23)
+
+#Valor k tal que a la derecha hay un área de 0.99 a la derecha
+qchisq(1-0.99,23)
+```
+
+
+
+##Cálculo de probabilidades de la distribución t-student con 37 grados de libertad
+
+```{r}
+#Secuencia de números aleatorios t-student#
+t <- rt(150,37)
+t
+
+#Función de densidad t-student#
+curve(dt(x,df = 37),xlim=c(-5,5),xlab="T",ylab="f(T)", main="Función de densidad T-Student\n grados de libertad = 37")
+
+#Cálculo de probabilidades usando la distribución t-student
+
+#P(T>17.75)
+1-pt(1.43,37)
+
+#P(-0.57<T<0.52)
+pt(0.52,37)-pt(-0.57,37)
+
+#Valor k tal que a la derecha hay un área de 0.025 a la derecha
+qt(1-0.025,37)
+
+#Valor k tal que a la derecha hay un área de 0.095 a la derecha
+qt(1-0.095,37)
+
+```
+
+
