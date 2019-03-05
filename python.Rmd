@@ -2,6 +2,10 @@
 title: "Python"
 ---
 ![](python.png)
+<p> </p>
+<p> </p>
+<p> </p>
+
 ##Análisis exploratorio de datos con python
 
 El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados. 
