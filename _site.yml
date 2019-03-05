@@ -3,7 +3,7 @@ output_dir: "."
 navbar:
   title: "Repositorio"
   left:
-    - text: "Introducción"
+    - text: "Inicio"
       href: index.html
     - text: "R"
       href: r.html
