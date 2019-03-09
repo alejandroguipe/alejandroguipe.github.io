@@ -1,8 +1,5 @@
 ---
 title: "Javascript"
 ---
-![](js.png)
 
-<p> </p>
-<p> </p>
-<p> </p>
+

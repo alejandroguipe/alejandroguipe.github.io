@@ -1,8 +1,7 @@
 ---
-title: " "
+title: "Introducción"
 ---
 ![](economia.png)
-<p> </p>
 <p> </p>
 <p> </p>
 

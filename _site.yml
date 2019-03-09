@@ -11,6 +11,12 @@ navbar:
       href: python.html
     - text: "Javascript"
       href: javascript.html
+    - text: "Tableau"
+      href: tableau.html
+    - text: "Stata"
+      href: stata.html
+    - text: "SQL"
+      href: sql.html
     - text: "Contacto"
       href: about.html
       

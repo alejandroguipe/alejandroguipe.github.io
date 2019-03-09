@@ -1,11 +1,6 @@
 ---
-title: " "
+title: "R"
 ---
-![](r.png)
-
-<p> </p>
-<p> </p>
-<p> </p>
 
 ##Análisis exploratorio de datos con R
 

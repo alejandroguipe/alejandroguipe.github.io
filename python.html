@@ -291,6 +291,15 @@ $(document).ready(function () {
   <a href="javascript.html">Javascript</a>
 </li>
 <li>
+  <a href="tableau.html">Tableau</a>
+</li>
+<li>
+  <a href="stata.html">Stata</a>
+</li>
+<li>
+  <a href="sql.html">SQL</a>
+</li>
+<li>
   <a href="about.html">Contacto</a>
 </li>
       </ul>
@@ -310,13 +319,6 @@ $(document).ready(function () {
 </div>
 
 
-<img src="python.png" />
-<p>
-</p>
-<p>
-</p>
-<p>
-</p>
 <div id="analisis-exploratorio-de-datos-con-python" class="section level2">
 <h2>Análisis exploratorio de datos con python</h2>
 <p>El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados.</p>
@@ -478,6 +480,7 @@ print(df1.describe()) </code></pre>
 <p>En este apartado mostraremos la matriz de dispersión de los datos a través del comando <strong>pairplot</strong>, la matriz de dispersión muestra gráficamente el grado de correlación entre las variables, por medio de la diagonal y las columnas podemos encontrar el diagrama de dispersión que corresponde para cada par de variables. Se aplica este comando a cada base de datos separada de acuerdo al nivel de educación de los padres.</p>
 <pre class="python"><code>import seaborn as sns
 import matplotlib.pyplot as plt
+plt.clf()
 ##Matriz de dispersión por nivel de educación de los padres
 mdd1 = sns.pairplot(df1)
 plt.show()</code></pre>
@@ -498,10 +501,12 @@ plt.show()</code></pre>
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-4-6.png" width="720" /></p>
 <pre class="python"><code>import seaborn as sns
+plt.clf()
 ##Matriz de dispersión por nivel de educación de los padres consolidada
 sns.pairplot(df, hue=&quot;parental level of education&quot;)
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-5-1.png" width="910" /></p>
+<pre class="python"><code>plt.clf()</code></pre>
 </div>
 <div id="observaciones-de-la-matriz-de-dispersion" class="section level3">
 <h3>Observaciones de la matriz de dispersión</h3>
@@ -510,17 +515,20 @@ plt.show()</code></pre>
 <div id="diagramas-de-dispersion-de-todas-las-asignaturas-de-acuerdo-al-nivel-de-educacion-de-los-padres" class="section level3">
 <h3>Diagramas de dispersión de todas las asignaturas de acuerdo al nivel de educación de los padres</h3>
 <p>A traves de las siguientes instrucciones consolidamos sólo para las variables numéricas (notas de matemáticas, lectura y escritura) y en 3 gráficos en lugar de 18 los diagramas de dispersión de acuerdo al nivel de educacion de los padres que están identificados por colores.</p>
-<pre class="python"><code>import seaborn as sns
+<pre class="python"><code>plt.clf()
+import seaborn as sns
 ##diagrama de dispersión matematicas vs lectura##
 sns.scatterplot(df[&quot;math score&quot;], df[&quot;reading score&quot;], hue=df[&quot;parental level of education&quot;])
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-6-1.png" width="910" /></p>
 <pre class="python"><code>import seaborn as sns
+plt.clf()
 ##diagrama de dispersión lectura vs escritura##
 sns.scatterplot(df[&quot;math score&quot;], df[&quot;writing score&quot;], hue=df[&quot;parental level of education&quot;])
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-7-1.png" width="910" /></p>
 <pre class="python"><code>import seaborn as sns
+plt.clf()
 ##diagrama de dispersión lectura vs escritura##
 sns.scatterplot(df[&quot;reading score&quot;], df[&quot;writing score&quot;], hue=df[&quot;parental level of education&quot;])
 plt.show()</code></pre>
@@ -528,33 +536,176 @@ plt.show()</code></pre>
 </div>
 <div id="histogramas" class="section level3">
 <h3>Histogramas</h3>
-<pre class="python"><code>import matplotlib.pyplot as plt
-plt.hist(df1[&quot;math score&quot;])
-plt.hist(df2[&quot;math score&quot;])
-plt.hist(df3[&quot;math score&quot;])
-plt.hist(df4[&quot;math score&quot;])
-plt.hist(df5[&quot;math score&quot;])
-plt.hist(df6[&quot;math score&quot;])
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import matplotlib.pyplot as plt
+plt.clf()
+sns.set(style=&quot;darkgrid&quot;)
+plt.hist(df1[&quot;math score&quot;], label=&quot;associate&#39;s degree&quot;)
+plt.hist(df2[&quot;math score&quot;], label=&quot;bachelor&#39;s degree&quot;)
+plt.hist(df3[&quot;math score&quot;], label=&quot;master&#39;s degree&quot;)
+plt.hist(df4[&quot;math score&quot;], label=&quot;some college&quot;)
+plt.hist(df5[&quot;math score&quot;], label=&quot;high school&quot;)
+plt.hist(df6[&quot;math score&quot;], label=&quot;some high school&quot;)
+plt.title(&#39;Notas de matemática por educación de los padres&#39;)
+plt.legend()
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-9-1.png" width="910" /></p>
-<pre class="python"><code>import matplotlib.pyplot as plt
-plt.hist(df1[&quot;reading score&quot;])
-plt.hist(df2[&quot;reading score&quot;])
-plt.hist(df3[&quot;reading score&quot;])
-plt.hist(df4[&quot;reading score&quot;])
-plt.hist(df5[&quot;reading score&quot;])
-plt.hist(df6[&quot;reading score&quot;])
+<pre class="python"><code>plt.clf()</code></pre>
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+sns.distplot( df1[&quot;math score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;)
+sns.distplot( df2[&quot;math score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;)
+sns.distplot( df3[&quot;math score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;)
+sns.distplot( df4[&quot;math score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;)
+sns.distplot( df5[&quot;math score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;)
+sns.distplot( df6[&quot;math score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;)
+plt.legend()
 plt.show()</code></pre>
 <p><img src="python_files/figure-html/unnamed-chunk-10-1.png" width="910" /></p>
-<pre class="python"><code>import matplotlib.pyplot as plt
-plt.hist(df1[&quot;writing score&quot;])
-plt.hist(df2[&quot;writing score&quot;])
-plt.hist(df3[&quot;writing score&quot;])
-plt.hist(df4[&quot;writing score&quot;])
-plt.hist(df5[&quot;writing score&quot;])
-plt.hist(df6[&quot;writing score&quot;])
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1[&quot;math score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;, ax=axes[0, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-11-1.png" width="1728" /></p>
+<pre class="python"><code>sns.distplot( df2[&quot;math score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;, ax=axes[0, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-11-2.png" width="1728" /></p>
+<pre class="python"><code>sns.distplot( df3[&quot;math score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;, ax=axes[0, 2])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-11-3.png" width="1728" /></p>
+<pre class="python"><code>sns.distplot( df4[&quot;math score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;, ax=axes[1, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-11-4.png" width="1728" /></p>
+<pre class="python"><code>sns.distplot( df5[&quot;math score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;, ax=axes[1, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-11-5.png" width="1728" /></p>
+<pre class="python"><code>sns.distplot( df6[&quot;math score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;, ax=axes[1, 2])
+plt.legend()
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-11-1.png" width="910" /></p>
+<p><img src="python_files/figure-html/unnamed-chunk-11-6.png" width="1728" /></p>
+<pre class="python"><code>import matplotlib.pyplot as plt
+#histogramas de las notas de lectura de acuerdo a la educación de los padres
+plt.clf()
+sns.set(style=&quot;darkgrid&quot;)
+plt.hist(df1[&quot;reading score&quot;], label=&quot;associate&#39;s degree&quot;)
+plt.hist(df2[&quot;reading score&quot;], label=&quot;bachelor&#39;s degree&quot;)
+plt.hist(df3[&quot;reading score&quot;], label=&quot;master&#39;s degree&quot;)
+plt.hist(df4[&quot;reading score&quot;], label=&quot;some college&quot;)
+plt.hist(df5[&quot;reading score&quot;], label=&quot;high school&quot;)
+plt.hist(df6[&quot;reading score&quot;], label=&quot;some high school&quot;)
+plt.title(&#39;Notas de lectura por educación de los padres&#39;)
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-12-1.png" width="1728" /></p>
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+sns.distplot( df1[&quot;reading score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;)
+sns.distplot( df2[&quot;reading score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;)
+sns.distplot( df3[&quot;reading score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;)
+sns.distplot( df4[&quot;reading score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;)
+sns.distplot( df5[&quot;reading score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;)
+sns.distplot( df6[&quot;reading score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;)
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-13-1.png" width="1728" /></p>
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1[&quot;reading score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;, ax=axes[0, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df2[&quot;reading score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;, ax=axes[0, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df3[&quot;reading score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;, ax=axes[0, 2])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df4[&quot;reading score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;, ax=axes[1, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df5[&quot;reading score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;, ax=axes[1, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df6[&quot;reading score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;, ax=axes[1, 2])
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-14-1.png" width="1728" /></p>
+<pre class="python"><code>import matplotlib.pyplot as plt
+#histogramas de las notas de escritura de acuerdo a la educación de los padres
+plt.clf()
+sns.set(style=&quot;darkgrid&quot;)
+plt.hist(df1[&quot;writing score&quot;], label=&quot;associate&#39;s degree&quot;)
+plt.hist(df2[&quot;writing score&quot;], label=&quot;bachelor&#39;s degree&quot;)
+plt.hist(df3[&quot;writing score&quot;], label=&quot;master&#39;s degree&quot;)
+plt.hist(df4[&quot;writing score&quot;], label=&quot;some college&quot;)
+plt.hist(df5[&quot;writing score&quot;], label=&quot;high school&quot;)
+plt.hist(df6[&quot;writing score&quot;], label=&quot;some high school&quot;)
+plt.title(&#39;Notas de escritura por educación de los padres&#39;)
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-15-1.png" width="1728" /></p>
+<pre class="python"><code>#histogramas de las notas de escritura de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+sns.distplot( df1[&quot;writing score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;)
+sns.distplot( df2[&quot;writing score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;)
+sns.distplot( df3[&quot;writing score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;)
+sns.distplot( df4[&quot;writing score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;)
+sns.distplot( df5[&quot;writing score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;)
+sns.distplot( df6[&quot;writing score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;)
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-16-1.png" width="1728" /></p>
+<pre class="python"><code>#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
+sns.set(style=&quot;darkgrid&quot;)
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1[&quot;writing score&quot;] , color=&quot;skyblue&quot;, label=&quot;associate&#39;s degree&quot;, ax=axes[0, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df2[&quot;writing score&quot;] , color=&quot;red&quot;, label=&quot;bachelor&#39;s degree&quot;, ax=axes[0, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df3[&quot;writing score&quot;] , color=&quot;gold&quot;, label=&quot;master&#39;s degree&quot;, ax=axes[0, 2])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df4[&quot;writing score&quot;] , color=&quot;olive&quot;, label=&quot;some college&quot;, ax=axes[1, 0])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df5[&quot;writing score&quot;] , color=&quot;teal&quot;, label=&quot;high school&quot;, ax=axes[1, 1])
+plt.legend()</code></pre>
+<pre><code>## No handles with labels found to put in legend.</code></pre>
+<pre class="python"><code>sns.distplot( df6[&quot;writing score&quot;] , color=&quot;gray&quot;, label=&quot;some high school&quot;, ax=axes[1, 2])
+plt.legend()
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-17-1.png" width="1728" /></p>
 </div>
 <div id="observaciones-de-los-histogramas" class="section level3">
 <h3>Observaciones de los histogramas</h3>
@@ -562,18 +713,23 @@ plt.show()</code></pre>
 </div>
 <div id="diagramas-de-caja-y-bigote" class="section level3">
 <h3>Diagramas de caja y bigote</h3>
-<pre class="python"><code>import seaborn as sns
+<pre class="python"><code>plt.clf()
+import seaborn as sns
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 sns.boxplot(df[&quot;math score&quot;], df[&quot;parental level of education&quot;])
+plt.subplots_adjust(left=0.2, right=0.95, wspace=0.8, hspace=0.8)
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-12-1.png" width="910" /></p>
+<p><img src="python_files/figure-html/unnamed-chunk-18-1.png" width="1728" /></p>
 <pre class="python"><code>import seaborn as sns
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 sns.boxplot(df[&quot;reading score&quot;], df[&quot;parental level of education&quot;])
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-13-1.png" width="910" /></p>
+<p><img src="python_files/figure-html/unnamed-chunk-19-1.png" width="1728" /></p>
 <pre class="python"><code>import seaborn as sns
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 sns.boxplot(df[&quot;writing score&quot;], df[&quot;parental level of education&quot;])
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-14-1.png" width="910" /></p>
+<p><img src="python_files/figure-html/unnamed-chunk-20-1.png" width="1728" /></p>
 </div>
 <div id="observaciones-de-los-diagramas-de-caja-y-bigote" class="section level3">
 <h3>Observaciones de los diagramas de caja y bigote</h3>
@@ -582,6 +738,7 @@ plt.show()</code></pre>
 <div id="matriz-de-correlacion-de-los-datos" class="section level3">
 <h3>Matriz de correlación de los datos</h3>
 <pre class="python"><code>import seaborn as sns
+plt.clf()
 ##Matriz de correlación##
 print(df.corr())</code></pre>
 <pre><code>##                math score  reading score  writing score
@@ -589,10 +746,11 @@ print(df.corr())</code></pre>
 ## reading score    0.817580       1.000000       0.954598
 ## writing score    0.802642       0.954598       1.000000</code></pre>
 <pre class="python"><code>import seaborn as sns
+plt.clf()
 ##Matriz de correlación##
 sns.heatmap(df.corr(), square=True, annot=True)
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-16-1.png" width="910" /></p>
+<p><img src="python_files/figure-html/unnamed-chunk-22-1.png" width="1728" /></p>
 </div>
 <div id="observaciones-de-la-matriz-de-correlacion" class="section level3">
 <h3>Observaciones de la matriz de Correlación</h3>
@@ -600,94 +758,69 @@ plt.show()</code></pre>
 </div>
 <div id="prueba-grafica-de-normalidad" class="section level3">
 <h3>Prueba gráfica de normalidad</h3>
-<pre class="python"><code>import pylab 
+<pre class="python"><code>plt.clf()
+import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams[&#39;figure.figsize&#39;] = (14.0, 10.0)
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 ##prueba de normalidad##
 plt.subplot(231)
 stats.probplot(df1[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-1.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(232)
+plt.subplot(232)
 stats.probplot(df2[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-2.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(233)
+plt.subplot(233)
 stats.probplot(df3[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-3.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(234)
+plt.subplot(234)
 stats.probplot(df4[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-4.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(235)
+plt.subplot(235)
 stats.probplot(df5[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-5.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(236)
+plt.subplot(236)
 stats.probplot(df6[&quot;math score&quot;], dist=&quot;norm&quot;, plot=pylab)
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-17-6.png" width="910" /></p>
-<pre class="python"><code>import pylab 
+<p><img src="python_files/figure-html/unnamed-chunk-23-1.png" width="1728" /></p>
+<pre class="python"><code>plt.clf()
+import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams[&#39;figure.figsize&#39;] = (14.0, 10.0)
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 ###
-plt.subplot(231)</code></pre>
-<pre><code>## C:\Users\ALEJAN~1\AppData\Local\Programs\Python\Python37\lib\site-packages\matplotlib\figure.py:98: MatplotlibDeprecationWarning: 
-## Adding an axes using the same arguments as a previous axes currently reuses the earlier instance.  In a future version, a new instance will always be created and returned.  Meanwhile, this warning can be suppressed, and the future behavior ensured, by passing a unique label to each axes instance.
-##   &quot;Adding an axes using the same arguments as a previous axes &quot;</code></pre>
-<pre class="python"><code>stats.probplot(df1[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-1.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(232)
+plt.subplot(231)
+stats.probplot(df1[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
+plt.subplot(232)
 stats.probplot(df2[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-2.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(233)
+plt.subplot(233)
 stats.probplot(df3[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-3.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(234)
+plt.subplot(234)
 stats.probplot(df4[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-4.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(235)
+plt.subplot(235)
 stats.probplot(df5[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-5.png" width="910" /></p>
-<pre class="python"><code>plt.subplot(236)
+plt.subplot(236)
 stats.probplot(df6[&quot;reading score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.show()</code></pre>
-<p><img src="python_files/figure-html/unnamed-chunk-18-7.png" width="910" /></p>
-<pre class="python"><code>import pylab 
+<p><img src="python_files/figure-html/unnamed-chunk-24-1.png" width="1728" /></p>
+<pre class="python"><code>plt.clf()
+import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams[&#39;figure.figsize&#39;] = (14.0, 10.0)
+plt.rcParams[&#39;figure.figsize&#39;] = (18.0, 18.0)
 ####
 plt.subplot(231)
 stats.probplot(df1[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.subplot(232)
 stats.probplot(df2[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.subplot(233)
 stats.probplot(df3[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.subplot(234)
 stats.probplot(df4[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.subplot(235)
 stats.probplot(df5[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()
 plt.subplot(236)
 stats.probplot(df6[&quot;writing score&quot;], dist=&quot;norm&quot;, plot=pylab)
-pylab.show()</code></pre>
+plt.show()</code></pre>
+<p><img src="python_files/figure-html/unnamed-chunk-25-1.png" width="1728" /></p>
 </div>
 <div id="observaciones-de-la-prueba-grafica-de-normalidad" class="section level3">
 <h3>Observaciones de la prueba gráfica de normalidad</h3>

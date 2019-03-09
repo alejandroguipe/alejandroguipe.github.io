@@ -1,10 +1,6 @@
 ---
 title: "Python"
 ---
-![](python.png)
-<p> </p>
-<p> </p>
-<p> </p>
 
 ##Análisis exploratorio de datos con python
 
@@ -103,7 +99,7 @@ En este apartado mostraremos la matriz de dispersión de los datos a través del
 ```{python echo=TRUE}
 import seaborn as sns
 import matplotlib.pyplot as plt
-
+plt.clf()
 ##Matriz de dispersión por nivel de educación de los padres
 
 mdd1 = sns.pairplot(df1)
@@ -124,10 +120,11 @@ plt.show()
 
 ```{python echo=TRUE}
 import seaborn as sns
-
+plt.clf()
 ##Matriz de dispersión por nivel de educación de los padres consolidada
 sns.pairplot(df, hue="parental level of education")
 plt.show()
+plt.clf()
 
 ```
 
@@ -142,8 +139,8 @@ A traves de las siguientes instrucciones consolidamos sólo para las variables n
 
 
 ```{python echo=TRUE}
+plt.clf()
 import seaborn as sns
-
 ##diagrama de dispersión matematicas vs lectura##
 sns.scatterplot(df["math score"], df["reading score"], hue=df["parental level of education"])
 plt.show()
@@ -151,10 +148,9 @@ plt.show()
 ```
 
 
-
 ```{python echo=TRUE}
 import seaborn as sns
-
+plt.clf()
 ##diagrama de dispersión lectura vs escritura##
 sns.scatterplot(df["math score"], df["writing score"], hue=df["parental level of education"])
 plt.show()
@@ -164,7 +160,7 @@ plt.show()
 
 ```{python echo=TRUE}
 import seaborn as sns
-
+plt.clf()
 ##diagrama de dispersión lectura vs escritura##
 sns.scatterplot(df["reading score"], df["writing score"], hue=df["parental level of education"])
 plt.show()
@@ -175,45 +171,183 @@ plt.show()
 ### Histogramas 
 
 ```{python echo=TRUE}
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
 import matplotlib.pyplot as plt
+plt.clf()
+sns.set(style="darkgrid")
+plt.hist(df1["math score"], label="associate's degree")
+plt.hist(df2["math score"], label="bachelor's degree")
+plt.hist(df3["math score"], label="master's degree")
+plt.hist(df4["math score"], label="some college")
+plt.hist(df5["math score"], label="high school")
+plt.hist(df6["math score"], label="some high school")
+plt.title('Notas de matemática por educación de los padres')
+plt.legend()
+plt.show()
+plt.clf()
+```
 
-plt.hist(df1["math score"])
-plt.hist(df2["math score"])
-plt.hist(df3["math score"])
-plt.hist(df4["math score"])
-plt.hist(df5["math score"])
-plt.hist(df6["math score"])
+
+```{python echo=TRUE}
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+sns.distplot( df1["math score"] , color="skyblue", label="associate's degree")
+sns.distplot( df2["math score"] , color="red", label="bachelor's degree")
+sns.distplot( df3["math score"] , color="gold", label="master's degree")
+sns.distplot( df4["math score"] , color="olive", label="some college")
+sns.distplot( df5["math score"] , color="teal", label="high school")
+sns.distplot( df6["math score"] , color="gray", label="some high school")
+plt.legend()
+plt.show()
+```
+
+
+```{python echo=TRUE}
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1["math score"] , color="skyblue", label="associate's degree", ax=axes[0, 0])
+plt.legend()
+plt.show()
+sns.distplot( df2["math score"] , color="red", label="bachelor's degree", ax=axes[0, 1])
+plt.legend()
+plt.show()
+sns.distplot( df3["math score"] , color="gold", label="master's degree", ax=axes[0, 2])
+plt.legend()
+plt.show()
+sns.distplot( df4["math score"] , color="olive", label="some college", ax=axes[1, 0])
+plt.legend()
+plt.show()
+sns.distplot( df5["math score"] , color="teal", label="high school", ax=axes[1, 1])
+plt.legend()
+plt.show()
+sns.distplot( df6["math score"] , color="gray", label="some high school", ax=axes[1, 2])
+plt.legend()
+plt.show()
+```
+
+
+
+```{python echo=TRUE}
+import matplotlib.pyplot as plt
+#histogramas de las notas de lectura de acuerdo a la educación de los padres
+plt.clf()
+sns.set(style="darkgrid")
+plt.hist(df1["reading score"], label="associate's degree")
+plt.hist(df2["reading score"], label="bachelor's degree")
+plt.hist(df3["reading score"], label="master's degree")
+plt.hist(df4["reading score"], label="some college")
+plt.hist(df5["reading score"], label="high school")
+plt.hist(df6["reading score"], label="some high school")
+plt.title('Notas de lectura por educación de los padres')
+plt.legend()
 plt.show()
 
 ```
 
 
 ```{python echo=TRUE}
-import matplotlib.pyplot as plt
-
-
-plt.hist(df1["reading score"])
-plt.hist(df2["reading score"])
-plt.hist(df3["reading score"])
-plt.hist(df4["reading score"])
-plt.hist(df5["reading score"])
-plt.hist(df6["reading score"])
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+sns.distplot( df1["reading score"] , color="skyblue", label="associate's degree")
+sns.distplot( df2["reading score"] , color="red", label="bachelor's degree")
+sns.distplot( df3["reading score"] , color="gold", label="master's degree")
+sns.distplot( df4["reading score"] , color="olive", label="some college")
+sns.distplot( df5["reading score"] , color="teal", label="high school")
+sns.distplot( df6["reading score"] , color="gray", label="some high school")
+plt.legend()
 plt.show()
+```
 
+
+```{python echo=TRUE}
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1["reading score"] , color="skyblue", label="associate's degree", ax=axes[0, 0])
+plt.legend()
+sns.distplot( df2["reading score"] , color="red", label="bachelor's degree", ax=axes[0, 1])
+plt.legend()
+sns.distplot( df3["reading score"] , color="gold", label="master's degree", ax=axes[0, 2])
+plt.legend()
+sns.distplot( df4["reading score"] , color="olive", label="some college", ax=axes[1, 0])
+plt.legend()
+sns.distplot( df5["reading score"] , color="teal", label="high school", ax=axes[1, 1])
+plt.legend()
+sns.distplot( df6["reading score"] , color="gray", label="some high school", ax=axes[1, 2])
+plt.legend()
+plt.show()
 ```
 
 
 ```{python echo=TRUE}
 import matplotlib.pyplot as plt
-
-plt.hist(df1["writing score"])
-plt.hist(df2["writing score"])
-plt.hist(df3["writing score"])
-plt.hist(df4["writing score"])
-plt.hist(df5["writing score"])
-plt.hist(df6["writing score"])
+#histogramas de las notas de escritura de acuerdo a la educación de los padres
+plt.clf()
+sns.set(style="darkgrid")
+plt.hist(df1["writing score"], label="associate's degree")
+plt.hist(df2["writing score"], label="bachelor's degree")
+plt.hist(df3["writing score"], label="master's degree")
+plt.hist(df4["writing score"], label="some college")
+plt.hist(df5["writing score"], label="high school")
+plt.hist(df6["writing score"], label="some high school")
+plt.title('Notas de escritura por educación de los padres')
+plt.legend()
 plt.show()
 
+```
+
+
+
+```{python echo=TRUE}
+#histogramas de las notas de escritura de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+sns.distplot( df1["writing score"] , color="skyblue", label="associate's degree")
+sns.distplot( df2["writing score"] , color="red", label="bachelor's degree")
+sns.distplot( df3["writing score"] , color="gold", label="master's degree")
+sns.distplot( df4["writing score"] , color="olive", label="some college")
+sns.distplot( df5["writing score"] , color="teal", label="high school")
+sns.distplot( df6["writing score"] , color="gray", label="some high school")
+plt.legend()
+plt.show()
+```
+
+
+```{python echo=TRUE}
+#histogramas de las notas de matemáticas de acuerdo a la educación de los padres
+import seaborn as sns
+plt.clf()
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
+sns.set(style="darkgrid")
+f, axes = plt.subplots(2, 3, figsize=(18, 18), sharex=True)
+sns.distplot( df1["writing score"] , color="skyblue", label="associate's degree", ax=axes[0, 0])
+plt.legend()
+sns.distplot( df2["writing score"] , color="red", label="bachelor's degree", ax=axes[0, 1])
+plt.legend()
+sns.distplot( df3["writing score"] , color="gold", label="master's degree", ax=axes[0, 2])
+plt.legend()
+sns.distplot( df4["writing score"] , color="olive", label="some college", ax=axes[1, 0])
+plt.legend()
+sns.distplot( df5["writing score"] , color="teal", label="high school", ax=axes[1, 1])
+plt.legend()
+sns.distplot( df6["writing score"] , color="gray", label="some high school", ax=axes[1, 2])
+plt.legend()
+plt.show()
 ```
 
 
@@ -226,31 +360,26 @@ En los **histogramas** de las notas por asignatura de los grupos separados por e
 
 
 ```{python}
-
+plt.clf()
 import seaborn as sns
-
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 sns.boxplot(df["math score"], df["parental level of education"])
+plt.subplots_adjust(left=0.2, right=0.95, wspace=0.8, hspace=0.8)
 plt.show()
-
 ```
 
 ```{python echo=TRUE}
-
 import seaborn as sns
-
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 sns.boxplot(df["reading score"], df["parental level of education"])
 plt.show()
-
-
 ```
 
 ```{python echo=TRUE}
-
 import seaborn as sns
-
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 sns.boxplot(df["writing score"], df["parental level of education"])
 plt.show()
-
 ```
 
 
@@ -264,7 +393,7 @@ En los **diagramas de caja y bigote**, en el caso de las notas de matemáticas, 
 
 ```{python echo=TRUE}
 import seaborn as sns
-
+plt.clf()
 ##Matriz de correlación##
 
 print(df.corr())
@@ -274,7 +403,7 @@ print(df.corr())
 
 ```{python echo=TRUE}
 import seaborn as sns
-
+plt.clf()
 ##Matriz de correlación##
 
 sns.heatmap(df.corr(), square=True, annot=True)
@@ -292,34 +421,34 @@ La **matriz de correlación** de las notas de todas las asignaturas denota que l
 
 
 ```{python echo=TRUE}
-
+plt.clf()
 import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (14.0, 10.0)
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 
 ##prueba de normalidad##
 
 plt.subplot(231)
 stats.probplot(df1["math score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(232)
 stats.probplot(df2["math score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(233)
 stats.probplot(df3["math score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(234)
 stats.probplot(df4["math score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(235)
 stats.probplot(df5["math score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(236)
 stats.probplot(df6["math score"], dist="norm", plot=pylab)
@@ -329,37 +458,37 @@ plt.show()
 
 
 ```{python echo=TRUE}
-
+plt.clf()
 import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (14.0, 10.0)
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 
 ###
 plt.subplot(231)
 stats.probplot(df1["reading score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(232)
 stats.probplot(df2["reading score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(233)
 stats.probplot(df3["reading score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(234)
 stats.probplot(df4["reading score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(235)
 stats.probplot(df5["reading score"], dist="norm", plot=pylab)
-plt.show()
+
 
 plt.subplot(236)
 stats.probplot(df6["reading score"], dist="norm", plot=pylab)
-pylab.show()
+
 plt.show()
 
 ```
@@ -367,36 +496,36 @@ plt.show()
 
 
 ```{python echo=TRUE}
-
+plt.clf()
 import pylab 
 import scipy.stats as stats
 from scipy.stats import norm
 import matplotlib.pyplot as plt
-plt.rcParams['figure.figsize'] = (14.0, 10.0)
+plt.rcParams['figure.figsize'] = (18.0, 18.0)
 ####
 plt.subplot(231)
 stats.probplot(df1["writing score"], dist="norm", plot=pylab)
-pylab.show()
+
 
 plt.subplot(232)
 stats.probplot(df2["writing score"], dist="norm", plot=pylab)
-pylab.show()
+
 
 plt.subplot(233)
 stats.probplot(df3["writing score"], dist="norm", plot=pylab)
-pylab.show()
+
 
 plt.subplot(234)
 stats.probplot(df4["writing score"], dist="norm", plot=pylab)
-pylab.show()
+
 
 plt.subplot(235)
 stats.probplot(df5["writing score"], dist="norm", plot=pylab)
-pylab.show()
+
 
 plt.subplot(236)
 stats.probplot(df6["writing score"], dist="norm", plot=pylab)
-pylab.show()
+plt.show()
 
 
 ```
