@@ -1,9 +1,6 @@
 ---
 title: "Introducción"
 ---
-![](economia.png)
-<p> </p>
-<p> </p>
 
 Este sitio web está orientado a mostrar a través de diferentes lenguajes de programación algunas técnicas de análisis de exploración de datos, determinados cálculos matemáticos y estadísticos y el proceso que involucra la construcción de proyectos a pequeña y mediana escala que tengan el objetivo de dar solución a un problema concreto con el uso de algoritmos. 
 

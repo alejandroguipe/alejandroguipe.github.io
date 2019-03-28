@@ -319,24 +319,13 @@ $(document).ready(function () {
 </div>
 
 
-<div id="analisis-exploratorio-de-datos-con-r" class="section level2">
-<h2>Análisis exploratorio de datos con R</h2>
-<p>El objetivo es realizar un análisis exploratorio de datos (EDA) a una base de datos e identificar la posible normalidad de los datos registrados.</p>
-<p>La base de datos que se utiliza está disponible en <a href="https://www.kaggle.com/spscientist/students-performance-in-exams" class="uri">https://www.kaggle.com/spscientist/students-performance-in-exams</a> (debes registrarte para descargar). Dicha base de datos se encuentra alojada en el archivo StudentsPerformance.csv e incluye las notas de tres exámenes (matemática, lectura y escritura) para un grupo de estudiantes. Adicionalmente, se proporciona información demográfica de los estudiantes y sus padres, así como sobre su desempeño escolar.</p>
-<p>A partir de la base de datos y el análisis exploratorio de datos se hace énfasis en entender las diferencias descriptivas y la relación entre variables dividiendo la base de datos por el nivel de educación de los padres. Es decir, se ejecuta un análisis descriptivo tanto de las notas de los exámenes, como de las demás variables de las bases de datos, separando por el nivel de educación de los padres.</p>
-</div>
-<div id="preparativos" class="section level2">
-<h2>Preparativos</h2>
-<p>Para realizar los cálculos y mostrar las diversas gráficas se requieren de diversos paquetes con los que cuenta el lenguaje R para estas tareas. El paquete <strong>“ggplot2”</strong> es un potente paquete de graficación y visualización de datos. El paquete <strong>“corrplot”</strong> es requerido para el cálculo y la graficación de la matriz de correlación de un conjunto de datos. El paquete <strong>“plyr”</strong> es requerido para la manipulación de datos y subconjunntos de los mismo. Por último El paquete <strong>“plotrix”</strong> es requerido para la graficación de diagramas de torta en 3D.</p>
 <pre class="r"><code>install.packages(&quot;ggplot2&quot;)
 install.packages(&quot;corrplot&quot;)
 install.packages(&quot;plyr&quot;)
 install.packages(&quot;plotrix&quot;)</code></pre>
-</div>
-<div id="carga-y-reorganizacion-de-datos" class="section level2">
-<h2>Carga y reorganización de datos</h2>
-<p>A través de los siguientes comandos cargamos los datos del archivo StudentsPerformance.csv al data frame <strong>“datos”</strong>, renombramos la columnas del data frame para facilitar lectura y escritura de código y separamos nuestra base de datos de acuerdo al nivel de educación de los padres en 6 conjuntos.</p>
 <pre class="r"><code>datos&lt;-read.csv(&quot;StudentsPerformance.csv&quot;)
+#read.csv(file.choose(),)
+#read.csv(file.choose())
 
 colnames(datos)&lt;-c(&quot;gender&quot;,&quot;race&quot;,&quot;education&quot;, &quot;lunch&quot;, &quot;testprep&quot;, &quot;math&quot;,&quot;reading&quot;, &quot;writing&quot;)
 
@@ -346,10 +335,6 @@ datos3 &lt;- datos[datos$education==&quot;high school&quot;,]
 datos4 &lt;- datos[datos$education==&quot;master&#39;s degree&quot;,]
 datos5 &lt;- datos[datos$education==&quot;some college&quot;,]
 datos6 &lt;- datos[datos$education==&quot;some high school&quot;,]</code></pre>
-</div>
-<div id="resumen-y-visualizacion-de-la-composicion-los-datos" class="section level2">
-<h2>Resumen y visualización de la composición los datos</h2>
-<p>A continuación se muestran algunos comandos que nos ayudan a entender la composición de nuestra base de datos. Con los comandos <strong>head</strong> y <strong>tails</strong> nos permiten ver las primeras y últimas 6 filas del data frame <strong>“datos”</strong>. El comando <strong>names</strong> observamos los nombres de las columnas de la matriz. El comando <strong>str</strong> lista el conjunto de variables que se encuentran en la base datos junto a algunos datos particulares que destacan el número y naturaleza de las variables. Por último, el comando <strong>summary</strong> vendría a ser el más útil y nos ofrece un resumen de las variables tanto numéricas como no numéricas, sus frecuencias, cantidad, media, mediana y valores máximos y mínimos.</p>
 <pre class="r"><code>head(datos)</code></pre>
 <pre><code>##   gender    race          education        lunch  testprep math reading
 ## 1 female group B  bachelor&#39;s degree     standard      none   72      72
@@ -408,11 +393,9 @@ datos6 &lt;- datos[datos$education==&quot;some high school&quot;,]</code></pre>
 ##                  Mean   : 66.09   Mean   : 69.17   Mean   : 68.05  
 ##                  3rd Qu.: 77.00   3rd Qu.: 79.00   3rd Qu.: 79.00  
 ##                  Max.   :100.00   Max.   :100.00   Max.   :100.00</code></pre>
-</div>
-<div id="analisis-descriptivo-de-los-datos" class="section level2">
-<h2>Análisis descriptivo de los datos</h2>
-<div id="medidas-de-tendencia-central-por-nivel-de-educacion-de-los-padres" class="section level3">
-<h3>Medidas de tendencia central por nivel de educación de los padres</h3>
+<pre class="r"><code>levels(datos$education)</code></pre>
+<pre><code>## [1] &quot;associate&#39;s degree&quot; &quot;bachelor&#39;s degree&quot;  &quot;high school&quot;       
+## [4] &quot;master&#39;s degree&quot;    &quot;some college&quot;       &quot;some high school&quot;</code></pre>
 <pre class="r"><code>summary(datos1) </code></pre>
 <pre><code>##     gender         race                 education            lunch    
 ##  female:116   group A:14   associate&#39;s degree:222   free/reduced: 77  
@@ -503,18 +486,6 @@ datos6 &lt;- datos[datos$education==&quot;some high school&quot;,]</code></pre>
 ##                  Mean   :63.5   Mean   : 66.94   Mean   : 64.89  
 ##                  3rd Qu.:74.0   3rd Qu.: 79.00   3rd Qu.: 77.00  
 ##                  Max.   :97.0   Max.   :100.00   Max.   :100.00</code></pre>
-</div>
-<div id="observaciones-de-las-medidas-de-tendencia-central" class="section level3">
-<h3>Observaciones de las medidas de tendencia central</h3>
-<p>Analizando las <strong>medidas de tendencia central</strong> se encuentra que en todas las asignaturas <strong>la media y mediana más alta</strong> de todos los grupos separados por educación de los padres son las del grupo de los estudiantes que tienen padres con nivel de educación <strong>“master’s degree”</strong>. Por otra parte, <strong>la media y mediana más baja</strong>, particularmente en la asignatura de matemáticas es la del grupo con padres que tienen nivel de educación <strong>“asoociate’s degree”</strong>. En las asignaturas de lectura y escritura, la media y mediana más baja es la del grupo con padres que tienen nivel de educación <strong>“high school”</strong>.</p>
-</div>
-<div id="observaciones-de-las-medidas-de-tendencia-no-central-o-analisis-de-cuartiles" class="section level3">
-<h3>Observaciones de las medidas de tendencia no central o análisis de cuartiles</h3>
-<p>Analizando las <strong>medidas de tendencia no central</strong> se encuentra que el grupo de estudiantes con padres que tienen nivel educativo <strong>“associate’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 57 en todas las asignaturas, aproximadamente el 50% por encima de 67 y aproximadamente el 25% por encima de 80.En el grupo de los estudiantes con padres que tienen <strong>“bachelor’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 61 en todas las asignaturas, aproximadamente el 50% por encima de 68 y aproximadamente el 25% por encima de 79. En el grupo de los estudiantes con padres que tienen <strong>“high school”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 52 en todas las asignaturas, aproximadamente el 50% por encima de 63 y aproximadamente el 25% por encima de 72. En el grupo de los estudiantes con padres que tienen <strong>“master’s degree”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 55 en todas las asignaturas, aproximadamente el 50% por encima de 73 y aproximadamente el 25% por encima de 81. En el grupo de los estudiantes con padres que tienen <strong>“some college”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 59 en todas las asignaturas, aproximadamente el 50% por encima de 67.5 y aproximadamente el 25% por encima de 76. En el grupo de los estudiantes con padres que tienen <strong>“some high school”</strong> aproximadamente el 75% de los estudiantes posee notas por encima de 54 en todas las asignaturas, aproximadamente el 50% por encima de 65 y aproximadamente el 25% por encima de 74.</p>
-</div>
-<div id="observaciones-de-las-medidas-de-desviacion-de-las-variables-numericas-de-acuerdo-al-nivel-de-educacion-de-los-padres" class="section level3">
-<h3>Observaciones de las medidas de desviación de las variables numéricas de acuerdo al nivel de educación de los padres</h3>
-<p>Para este apartado usamosel comando <strong>sd</strong> para calcular la desviación estándar y se lo aplicamos solamente a las columnas de 6 a la 8 que contienene las notas de las asignaturas a cada uno de las base de datos separadas por eduación de los padres (datos1, datos2,…). El procedimiento que se usa es el siguiente: se contruye un vector por cada grupo de estudiantes separados por nivel de educación de los padres, el vector se compone de la desviación estándar de cada columna que corresponde a las notas de las asignaturas matemáticas, lectura y escritura, luego se contruye un data frame para mostrar toda la información de manera organizada</p>
 <pre class="r"><code>sd1=c(sd(datos1[,6]),sd(datos1[,7]),sd(datos1[,8]))
 sd2=c(sd(datos2[,6]),sd(datos2[,7]),sd(datos2[,8]))
 sd3=c(sd(datos3[,6]),sd(datos3[,7]),sd(datos3[,8]))
@@ -541,14 +512,6 @@ datosd</code></pre>
 #SDMD: SD Master&#39;s Degree
 #SDSC: SD Some College
 #SDSH: SD Some High School</code></pre>
-<p>Con respecto a las <strong>medidas de desviación</strong> de los grupos separados por el nivel educativo de los padres se puede decir que el grupo con <strong>notas más alejadas de la media en todas las asignaturas</strong> es el de los estudiantes con padres que tienen nivel educativo <strong>some high school</strong>, y el grupo <strong>con notas que menos se alejan de la media en matemáticas</strong> es el grupo de estudiantes con padres que tienen educación <strong>some college</strong> y los que tienen <strong>notas que menos se alejan de la media en las asignaturas de lectura y escritura</strong> es el grupo de estudiantes con padres que tienen <strong>master’s degree</strong> .</p>
-</div>
-</div>
-<div id="analisis-grafico" class="section level2">
-<h2>Análisis Gráfico</h2>
-<div id="matriz-de-dispersion" class="section level3">
-<h3>Matriz de dispersión</h3>
-<p>En este apartado mostraremos la matriz de dispersión de los datos a través del comando <strong>pairs</strong>, la matriz de dispersión muestra gráficamente el grado de correlación entre las variables, por medio de la diagonal y las columnas podemos encontrar el diagrama de dispersión que corresponde para cada par de variables. Se aplica este comando a cada base de datos separada de acuerdo al nivel de educación de los padres.</p>
 <pre class="r"><code>pairs(datos1, main=&quot;MDD Associate&#39;s Degree&quot;)  </code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <pre class="r"><code>pairs(datos2, main=&quot;MDD Bachelor&#39;s Degree&quot;)  </code></pre>
@@ -561,14 +524,6 @@ datosd</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-6-5.png" width="672" /></p>
 <pre class="r"><code>pairs(datos6, main=&quot;MDD Some High School&quot;)  </code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-6-6.png" width="672" /></p>
-</div>
-<div id="observaciones-de-la-matriz-de-dispersion" class="section level3">
-<h3>Observaciones de la matriz de dispersión</h3>
-<p>El patrón que se percibe en todos los grupos según el nivel de educación en <strong>la matriz de dispersión</strong> es una fuerte correlacion positiva entre las notas de lectura y escritura y también entre matematicas y demás asignaturas. Lo que implica que a mejores notas en lectura los estudiantes sacan mejores notas en escritura y viceversa. Tambien se puede decir que si los estudiantes sacan mejores notas en matemáticas sacan mejores en lectura y escritura, sin embargo esta última relación se ve mucho más débil que en el caso exclusivo de lectura y escritura.</p>
-</div>
-<div id="diagramas-de-dispersion-de-todas-las-asignaturas-de-acuerdo-al-nivel-de-educacion-de-los-padres" class="section level3">
-<h3>Diagramas de dispersión de todas las asignaturas de acuerdo al nivel de educación de los padres</h3>
-<p>A traves de las siguientes instrucciones consolidamos sólo para las variables numéricas (notas de matemáticas, lectura y escritura) y en 3 gráficos en lugar de 18 los diagramos de dispersión de acuerdo al nivel de educacion de los padres que están identificados por colores usando el paquete <strong>ggplot2</strong>.</p>
 <pre class="r"><code>mdd1=ggplot(datos, aes(math,reading, color=education)) +geom_point() + stat_smooth(method = &quot;loess&quot;, formula = y ~ x)+ labs(title=&quot;Diagrama de Dispersión Notas de Matemáticas vs Notas de Lectura&quot;)+ labs(x=&quot;Notas de Matemática&quot;, y=&quot;Notas de Lectura&quot;) 
 mdd1</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
@@ -578,10 +533,6 @@ mdd2</code></pre>
 <pre class="r"><code>mdd3=ggplot(datos, aes(math,writing, color=education)) +geom_point() + stat_smooth(method = &quot;loess&quot;, formula = y ~ x) + labs(title=&quot;Diagrama de Dispersión Notas de Matemática vs Notas de Escritura&quot;)+ labs(x=&quot;Notas de Lectura&quot;, y=&quot;Notas de Escritura&quot;) 
 mdd3</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-8-3.png" width="672" /></p>
-</div>
-<div id="histogramas" class="section level3">
-<h3>Histogramas</h3>
-<p>Usando el comando <strong>hist</strong> podemos obtener los diferentes histogramas de las notas por cada asignatura de acuerdo al nivel de educación de los padres. Mostraremos 6 histogramas por pantalla usando el comando <strong>layout</strong> que organiza nuestra ventana de visualización en 6 secciones.</p>
 <pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
 hist(datos1$math, main=&quot;Associate&#39;s Degree&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
 hist(datos2$math, main=&quot;Bachelor&#39;s Degree&quot;, xlab=&quot;Notas de Matemáticas&quot;, ylab=&quot;Frecuencia&quot;)
@@ -606,7 +557,6 @@ hist(datos4$writing, main=&quot;Master&#39;s Degree&quot;, xlab=&quot;Notas de E
 hist(datos5$writing, main=&quot;Some College&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)
 hist(datos6$writing, main=&quot;Some High School&quot;, xlab=&quot;Notas de Escritura&quot;, ylab=&quot;Frecuencia&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<p>Si usamos el paquete <strong>ggplot2</strong> podemos simplificar las instrucciones y mostrar en un sólo gráfico todos los histogramas de acuerdo al nivel de educación de los padres en 3 gráficos que corresponden a cada asignatura.</p>
 <pre class="r"><code>hist1=ggplot(data=datos, aes(math)) + geom_histogram(binwidth=5, color=&quot;gray&quot;, aes(fill=education))+ labs(title=&quot;Notas de Matemáticas vs Educación de Padres&quot;)+ labs(x=&quot;Notas de Matemática&quot;, y=&quot;Frecuencia&quot;) 
 hist1</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
@@ -616,14 +566,6 @@ hist2</code></pre>
 <pre class="r"><code>hist3=ggplot(data=datos, aes(writing)) + geom_histogram(binwidth=5, color=&quot;gray&quot;, aes(fill=education))+ labs(title=&quot;Notas de Escritura vs Educación de Padres&quot;)+ labs(x=&quot;Notas de Escritura&quot;, y=&quot;Frecuencia&quot;) 
 hist3</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
-</div>
-<div id="observaciones-de-los-histogramas" class="section level3">
-<h3>Observaciones de los histogramas</h3>
-<p>En los <strong>histogramas</strong> de las notas por asignatura de los grupos separados por educación de los padres se confirma graficamente lo que se extrajo del análisis de medias, medianas y análisis de cuartiles: que el grupo de estudiantes de <strong>master’s degree</strong> posee una mayor proporción de notas más altas que oscilan entre 55-67, gráficamente se muestra con histograma relativamente más uniforme que los demás grupos en todas las asignaturas.</p>
-</div>
-<div id="diagramas-de-caja-y-bigote" class="section level3">
-<h3>Diagramas de caja y bigote</h3>
-<p>Para este apartado usamos el comando **<em>ggplot2</em> que permite una mejor visualización. Se agrega una instrucción adicional para que marque con un punto la media del grupo, pudiendo comparar la mediana de todos los grupos separados por el nivel de educación de los padres con respecto al grupo total. Se presentan 3 gráficos, uno por cada asignatura.</p>
 <pre class="r"><code>box1=ggplot(datos, aes(education, math, color = education)) + geom_boxplot() + labs(title=&quot;Notas de Matemáticas vs Educación de Padres&quot;)+ labs(x=&quot;Educación de Padres&quot;, y=&quot;Notas de Matemáticas&quot;) + stat_summary(fun.y=mean, geom=&quot;point&quot;, shape=18,size=3, color=&quot;red&quot;)
 box1</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
@@ -633,24 +575,8 @@ box2</code></pre>
 <pre class="r"><code>box3=ggplot(datos, aes(education, writing, color = education)) + geom_boxplot() + labs(title=&quot;Notas de Escritura vs Educación de Padres&quot;)+ labs(x=&quot;Educación de Padres&quot;, y=&quot;Notas de Escritura&quot;) + stat_summary(fun.y=mean, geom=&quot;point&quot;, shape=18,size=3, color=&quot;blue&quot;)
 box3</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
-</div>
-<div id="observaciones-de-los-diagramas-de-caja-y-bigote" class="section level3">
-<h3>Observaciones de los diagramas de caja y bigote</h3>
-<p>En los <strong>diagramas de caja y bigote</strong>, en el caso de las notas de matemáticas, el grupo de estudiantes con padres que tienen <strong>master’s degree</strong> es el poseedor la mediana y el primer cuartil más alto con respecto a los demás grupos. En las demás asignaturas se sigue observando el liderazgo del grupo <strong>master degree</strong> del primer cuartil más alto con respecto a los demás grupos sin embargo en las notas de lectura y escritura su mediana es muy similar a la media del grupo en general.</p>
-</div>
-<div id="matriz-de-correlacion-de-los-datos" class="section level3">
-<h3>Matriz de correlación de los datos</h3>
-<p>Para calcular y mostrar la matriz de correlación se usa el comando <strong>corrplot</strong>, se aplica sólo a las notas por asignatura, se elimina la diagonal de la matriz que no aporta información relevante y se muestra sólo la matriz diagonal superior por la misma razón anterior.</p>
 <pre class="r"><code>corrplot(cor(datos[,6:8]), method=&quot;color&quot;, addCoef.col = &quot;white&quot;, type=&quot;upper&quot;, diag=FALSE, tl.col=&quot;black&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-</div>
-<div id="observaciones-de-la-matriz-de-correlacion" class="section level3">
-<h3>Observaciones de la matriz de Correlación</h3>
-<p>La <strong>matriz de correlación</strong> de las notas de todas las asignaturas denota que la <strong>correlación más fuerte se encuentra entre las notas de lectura y escritura</strong>, cuyo coeficiente de correlacion es de <strong>0.95</strong>, en comparación al que exhibe <strong>la relación de matemática con lectura y escritura que ronda el 0.8</strong>. Se destaca que <strong>la correlacion entre matematicas y lectura es ligeramente superior a la de matemática y escritura</strong>. Lo que podría implicar que quienes sacan mejores notas en matematicas suelen salir mejor en lectura en comparación con escritura.</p>
-</div>
-<div id="prueba-grafica-de-normalidad" class="section level3">
-<h3>Prueba gráfica de normalidad</h3>
-<p>Esta prueba nos permite identificar si los datos se ajustan a una distribución normal o que tanto se aproximan a esta. Se utilizan los comandos <strong>qqnorm</strong> y <strong>qqline</strong> para extraer las conclusiones. Se muestran 18 gráficos agrupados en 3 ventanas con 6 secciones. Cada ventana incluye las pruebas por asignatura de acuerdo a los distintos niveles de educación de los padres.</p>
 <pre class="r"><code>layout(matrix(c(1:6), nrow=2, byrow=FALSE))
 
 qqnorm(datos1$math, main= &quot;Math Associate&#39;s Degree&quot;)
@@ -711,24 +637,8 @@ qqline(datos5$writing)
 qqnorm(datos6$writing, main= &quot;Writing Some High School&quot;)
 qqline(datos6$writing)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
-</div>
-<div id="observaciones-de-la-prueba-grafica-de-normalidad" class="section level3">
-<h3>Observaciones de la prueba gráfica de normalidad</h3>
-<p>Al observar las <strong>pruebas de normalidad</strong> de todos los grupos separados por el nivel de educacion de los padres para todas las asignaturas se nota que todas pasan la prueba de normalidad de forma aceptable. Cabe mencionar que solo un grupo muestra una forma un ligeramente menos alejada de la normalidad y esto se observa en las notas de <strong>matemáticas</strong> del grupo de estudiantes con padres que tienen <strong>master’s degree</strong>.</p>
-</div>
-<div id="observaciones-finales" class="section level3">
-<h3>Observaciones Finales</h3>
-<p>El grupo que lidera a todos con respecto a las notas es de estudiantes con padres que tienen <strong>master’s degree</strong>,cuya media y mediana son más altas en todas las asignaturas, así como también el primer cuartil mas alto. En contraposición el grupo que lidera las notas más bajas es el grupo de estudiantes cuyos padres tienen <strong>high school</strong>. Todas las variables numéricas que corresponden a las notas de las asignaturas poseen una fuerte correlacion positva y se ajustan bastante bien a la distribucion normal.</p>
-<p>Podría decirse que las notas de matemáticas son las que menor relación guardan con las otras notas, viendo casi siempre estas graficas en una nube de puntos, relativamente, dispersa en contraste con las otras relaciones. Mientras que las notas de lectura y escritura mantienen en todas las agrupaciones de estudiantes una relación bastante estrecha, representado por medio de una nube de puntos muy condensada. Finalmente, todas las relaciones entre las diferentes notas de las diferentes agrupaciones mantiene una relación directamente proporcional entre ellas, notable a simple vista en los gráfico, además se presar valores, relativamente, aislados de la nube de puntos, más frecuentemente en el caso de las matrices de distribución para las notas de matemáticas. En conclusión se tiene que las relaciones entre las notas de los exámenes que poseen los estudiantes se encuentran notoriamente relacionadas entre sí en todas las distintas agrupaciones de estudiantes según el nivel de educación de sus padres.</p>
-</div>
-</div>
-<div id="calculo-de-probabilidades-con-lenguaje-r" class="section level1">
-<h1>Cálculo de probabilidades con lenguaje R</h1>
-<p>Esta sección tiene como objetivo simular secuencias de números que se ajusten a las distribuciones normal, binomial, chi-cuadrado y t-student y calcular determinadas probabilidades con tales distribuciones.</p>
-<div id="simulacion-de-datos-que-siguen-una-distribucion-normal" class="section level2">
-<h2>Simulación de datos que siguen una distribución normal</h2>
-<p>Generamos 15 números aleatorios que siguen distribución normal N(25,5)</p>
-<pre class="r"><code>nx=rnorm(100,25,sqrt(5))</code></pre>
+<pre class="r"><code>#100 números con distribución normal de media 25 y varianza raíz de 5
+nx=rnorm(100,25,sqrt(5))</code></pre>
 <pre class="r"><code>#Prueba gráfica de normalidad
 qqnorm(nx, main = &quot;Prueba de normalidad de los valores simulados&quot;)
 qqline(nx)</code></pre>
@@ -743,9 +653,6 @@ abline(v=mean(nx))</code></pre>
 <pre class="r"><code>#Gráfica de la función de densidad 
 curve(dnorm(x,25,sqrt(5)),xlim=c(10,40),ylab=&quot;f(x)&quot;,xlab=&quot;x&quot;, main=&quot;Curva Normal Generalizada\n media=25 y var=5&quot;, col=&quot;blue&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-24-4.png" width="672" /></p>
-</div>
-<div id="calculo-de-probabilidades-de-la-distribucion-normal-n255" class="section level2">
-<h2>Cálculo de probabilidades de la distribución normal N(25,5)</h2>
 <pre class="r"><code>#Se calculan las probabilidades considerando una distribución normal de media 25 y varianza 5
 1-pnorm(12,25,sqrt(5))  # Observación: este valor arroja 1 ya que la probabilidad 12 es tan pequeña que es casi cero</code></pre>
 <pre><code>## [1] 1</code></pre>
@@ -764,10 +671,9 @@ qnorm(1-0.025,25,sqrt(5))</code></pre>
 <pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.95 a la derecha
 qnorm(1-0.95,25,sqrt(5))</code></pre>
 <pre><code>## [1] 21.322</code></pre>
-</div>
-<div id="caculo-de-probabilidades-de-la-distribucion-binomial-b2000-4.2" class="section level2">
-<h2>Cáculo de probabilidades de la distribución binomial B(2000, 4.2%)</h2>
-<pre class="r"><code>#Secuencia de 2000 números aleatorios binomiales con n=2000 y p=0.042#
+<pre class="r"><code># Cáculo de probabilidades de la distribución binomial B(2000, 4.2%)
+
+#Secuencia de 2000 números aleatorios binomiales con n=2000 y p=0.042#
 bin=rbinom(2000,1,0.042)
 
 #Tabla de frecuencias para los artículos con defectos
@@ -778,7 +684,7 @@ bin=revalue(bin, c(&quot;0&quot;=&quot;No defectuoso&quot;, &quot;1&quot;=&quot;
 table(bin)</code></pre>
 <pre><code>## bin
 ## No defectuoso    Defectuoso 
-##          1901            99</code></pre>
+##          1927            73</code></pre>
 <pre class="r"><code>#Se grafican pies de torta para las tablas obtenidas anteriormente
 porcentaje= round(100*(table(bin))/sum(table(bin)),2)
 lab=paste(porcentaje,&quot;%&quot;)
@@ -797,34 +703,32 @@ sum(dbinom(7:10,120,0.042))</code></pre>
 <pre class="r"><code>#Se grafica la función de densidad de la distribución binomial ajustada a los parámetros solicitados 
 plot(density(as.numeric(bin)),type=&quot;h&quot;,xlab=&quot;X Artículos&quot;,ylab=&quot;Artículos con defectos&quot;,main=&quot;Función de Probabilidad B(2000,0.042)&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-27-3.png" width="672" /></p>
-</div>
-<div id="calculo-de-probabilidades-de-la-distribucion-chi-cuadrado-con-23-grados-de-libertad" class="section level2">
-<h2>Cálculo de probabilidades de la distribución chi-cuadrado con 23 grados de libertad</h2>
-<pre class="r"><code>#Secuencia de 150 números aleatorios chi cuadrado#
+<pre class="r"><code>#Cálculo de probabilidades de la distribución chi-cuadrado con 23 grados de libertad
+#Secuencia de 150 números aleatorios chi cuadrado#
 chi &lt;- rchisq(150,23)
 chi</code></pre>
-<pre><code>##   [1] 21.39917 20.26227 26.52566 25.53743 23.64170 22.44089 26.51300
-##   [8] 20.55219 12.53157 20.79557 14.53393 28.25449 37.15140 11.91701
-##  [15] 16.06739 42.11512 15.96487 13.21395 35.80844 17.95470 25.84649
-##  [22] 15.09440 28.84232 20.26994 17.63981 17.75313 11.00629 31.97441
-##  [29] 25.56323 24.79536 28.91151 21.23396 24.34697 25.94694 27.39403
-##  [36] 25.19987 31.45261 10.20510 21.20341 22.64695 27.28822 17.64894
-##  [43] 31.71289 22.28590 12.91513 26.67331 30.68517 21.90574 18.39164
-##  [50] 20.53868 25.51492 21.20511 26.91209 17.81813 26.21197 18.26707
-##  [57] 24.75132 21.05871 20.84919 13.90716 33.01333 28.36682 27.61869
-##  [64] 22.11337 28.83604 28.49208 31.88353 18.08199 26.84271 14.02456
-##  [71] 24.11121 24.44220 29.84664 19.09147 21.01723 13.00323 30.89724
-##  [78] 33.27614 23.16232 21.79405 26.67977 25.01332 18.22117 24.87214
-##  [85] 14.80925 14.04790 29.85631 27.08601 42.77856 17.99194 19.43925
-##  [92] 10.96114 38.79836 34.56631 22.39245 23.09427 18.25565 22.76766
-##  [99] 27.27485 20.43171 18.46078 28.10413 22.27749 17.47409 20.92494
-## [106] 40.07831 25.66725 19.89807 18.60737 28.51110 19.63459 30.77611
-## [113] 19.16385 17.85144 18.04172 23.40446 18.81856 20.37762 16.45715
-## [120] 28.51265 11.08449 12.67666 37.14782 26.16292 41.52920 20.74973
-## [127] 23.84077 19.36394 33.33285 16.68121 28.19910 29.13357 34.13460
-## [134] 22.38967 26.00291 20.55823 12.13513 16.74198 22.31322 30.23825
-## [141] 21.21394 22.45591 23.37171 26.09174 17.73528 35.72051 14.69231
-## [148] 30.76552 28.51019 27.28299</code></pre>
+<pre><code>##   [1] 22.171871 23.306110 23.875419 30.094181 28.986221 18.615213 20.741901
+##   [8] 21.305948 19.848564 19.038709 24.700155 18.584585 26.589544 22.692499
+##  [15] 30.803567 29.144945 24.837507 28.899564 23.583155 34.880870 17.193463
+##  [22] 16.009745 21.976448 16.289861 14.812370 31.282965 12.412026 18.367329
+##  [29] 20.662320 28.067489 26.465190 31.091664 25.435940 32.465934 30.037824
+##  [36] 40.325540 19.405265 18.067117 19.544051 23.555917 33.202617 22.434684
+##  [43] 16.745947 31.815870 20.373389 13.490924 20.291200 30.259006 13.709683
+##  [50] 20.796757 17.321493 26.755778 25.146072 15.201062 31.523323 23.475705
+##  [57] 18.358006 17.756793 24.801817 17.862099 11.202392 27.049261 21.876257
+##  [64] 14.872495 18.020467 16.459470 17.607770 30.060982 32.908354 30.878773
+##  [71] 18.247694 26.203432 22.695775 16.760482 26.023457 17.148726 21.780072
+##  [78] 27.984278 20.887503 14.866930 25.122557 31.413951 29.589261 22.860329
+##  [85] 20.015366 14.538130 42.721325 23.474476 15.964625 17.386707 20.062131
+##  [92] 29.111330 28.653827 17.199420 19.710110 25.263244 26.953338 23.781153
+##  [99] 48.531194 28.686050 29.628541 19.300431 25.015549 37.217540 15.236456
+## [106] 14.744569 21.001682 21.239961 20.530644 18.523552 28.906669 19.473745
+## [113] 27.075568 26.400653 27.864025 24.917144 27.579203 20.757367 30.128025
+## [120] 36.300833 26.108373 18.471070 20.219984 15.922720 14.738782 23.940210
+## [127] 25.014985 20.399693 12.664157 22.489765 21.194055 33.047912 20.067816
+## [134] 20.007786 18.617928 27.931908 20.497350 21.678450 23.017159 26.117552
+## [141] 20.873345 18.470584 17.658617 19.456659  9.812228 34.400673 33.653534
+## [148] 31.687467 25.770746 53.484320</code></pre>
 <pre class="r"><code>#Función de densidad chi cuadrado#
 curve(dchisq(x,df = 23),xlim=c(0,100),xlab=&quot;U&quot;,ylab=&quot;f(U)&quot;, main=&quot;Función de densidad chi-cuadrada\n grados de libertad = 23&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
@@ -843,42 +747,41 @@ qchisq(1-0.05,23)</code></pre>
 <pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.99 a la derecha
 qchisq(1-0.99,23)</code></pre>
 <pre><code>## [1] 10.19572</code></pre>
-</div>
-<div id="calculo-de-probabilidades-de-la-distribucion-t-student-con-37-grados-de-libertad" class="section level2">
-<h2>Cálculo de probabilidades de la distribución t-student con 37 grados de libertad</h2>
-<pre class="r"><code>#Secuencia de números aleatorios t-student#
+<pre class="r"><code>#Cálculo de probabilidades de la distribución t-student con 37 grados de libertad
+
+#Secuencia de números aleatorios t-student#
 t &lt;- rt(150,37)
 t</code></pre>
-<pre><code>##   [1]  0.42989379  1.80015761  2.05416407  1.08271565 -1.45510656
-##   [6] -1.21273236 -0.17667722 -0.41630385  0.48850281  1.24161304
-##  [11] -0.55225779 -0.67715434 -0.38438830 -2.08724955  0.66025887
-##  [16] -0.19525022  1.12470776 -1.53389747  0.36542756  0.36469852
-##  [21]  0.07548979  0.20370969 -0.43202119  0.22681560  0.63463372
-##  [26] -0.57235781 -0.46566202 -0.91311510  2.65742307 -0.07503086
-##  [31]  0.19816942  0.05764970  1.22445922  0.25162677  0.41047961
-##  [36] -1.21824631  1.91696943 -1.05139399  0.78232974  1.73403633
-##  [41] -0.28119604  1.46259100 -0.07162966  1.10246249  0.24556785
-##  [46] -0.29977509  1.53350429  0.42037089  1.15158965  0.84429855
-##  [51]  0.44040548  1.32946386  0.23996952  1.16300196 -1.38979635
-##  [56]  1.66481865  2.01610156 -0.94566178  0.49742455 -1.41141738
-##  [61]  0.13686309  0.12054483  0.04238860  1.15585779 -0.63663640
-##  [66] -2.05037513 -0.27730503 -1.05787732  2.07291813  0.10174870
-##  [71]  0.12082858 -0.53988013 -0.95876019 -0.16354473 -0.51814851
-##  [76] -0.81882648 -2.26933785  2.59669341  0.71005189 -0.22379919
-##  [81] -2.18933072  2.29615284  0.25142659  0.36034506  1.27240527
-##  [86] -0.23314460  1.60534736  1.13268082 -1.21210354  0.76117505
-##  [91]  0.14285110 -0.43605755  0.73673012  1.20319922 -1.04062210
-##  [96] -1.08740380 -0.70000673 -0.18848638 -0.04016638 -1.19401315
-## [101] -0.09973350 -1.14831990 -0.11523579 -1.13413527  0.86634771
-## [106] -1.32534164  0.48985284 -0.98545662 -0.35609313  1.45645244
-## [111] -0.13113919  0.92276653 -0.69089318  0.63050848  0.16452037
-## [116]  0.47058337  0.39403276  0.09302717 -0.59800237 -0.12992129
-## [121] -0.41645566 -1.89338677  1.57767803 -0.60617896  0.19998077
-## [126] -0.23375118 -0.04961404  0.03430671 -0.02548054 -1.96521261
-## [131] -1.64081935  0.70371042 -1.00611281  1.07705866  2.33156882
-## [136] -0.84050022 -0.64084878 -0.22685294  0.25489515 -0.54132869
-## [141] -1.76959793  0.83777410  1.74779253  0.60533792  0.72231861
-## [146]  1.10211082  2.03303569  0.77265467 -0.13754046  0.01784560</code></pre>
+<pre><code>##   [1] -0.25129419  1.19360750  0.35179930 -0.18215473  1.65960470
+##   [6] -0.76802423 -1.29893677 -1.28863690 -0.02836460  0.59907378
+##  [11] -1.09212388  0.53010211  3.36516788  0.12642672  0.09124409
+##  [16] -0.33417584 -0.15151519 -0.70382520  0.87672956  1.59385110
+##  [21] -1.15427325  0.70136449 -0.69493434  0.28958195  1.20096013
+##  [26] -1.70718598  0.02162200  0.95695039  0.13124031  0.77475588
+##  [31] -0.82779142 -0.76392455  0.81943335  1.32040667 -0.55481578
+##  [36] -1.49400511  1.28120452  0.02011186  0.75816827  0.62408408
+##  [41] -0.63407470  0.44064639 -0.10581553  0.21797835  0.58915007
+##  [46]  0.73808336 -0.10205315 -0.31514582 -0.56130305  1.07858681
+##  [51] -0.39340074 -0.17105868  1.50811531 -0.35761011 -0.45894120
+##  [56]  0.66391244  0.27608130  1.56255342 -1.08374049  0.91133243
+##  [61] -0.64987107 -2.29738508  2.83087814  0.32490537  1.03600251
+##  [66]  0.06193615 -0.23723008  0.26946229 -0.71721360 -0.60077185
+##  [71]  1.61718470  0.18507711  1.05481004  0.30326129  0.31010668
+##  [76] -0.50150712 -1.50732153  0.45876726  0.61762307  1.50417426
+##  [81] -2.21571036 -0.34347122 -1.71067561 -2.11465981  0.84285219
+##  [86] -0.19751014  0.67377070  0.76505868 -0.87852355 -0.36134958
+##  [91] -0.08672671  0.58548710  1.04584606 -2.59590140  0.27118357
+##  [96] -0.23052649  0.22574775 -2.27642459  0.07667920  0.05619410
+## [101]  1.02683577  0.47099205 -1.48367898  0.53525987  0.60854629
+## [106] -1.50822288 -0.67001156 -1.36798007 -0.20088173  0.67243376
+## [111] -0.73522370 -1.59908714 -0.60919994  0.58141424  1.33538280
+## [116] -1.69143197 -0.42147856  0.18657299  0.42747115 -0.62333113
+## [121] -0.98440766  0.21473023  0.39662237  0.55815924 -0.70872164
+## [126] -0.44672203  1.14673892 -0.85533087 -0.91313372 -0.18019802
+## [131]  0.60042511  0.85365123  1.50110547 -0.01611279 -0.46520697
+## [136] -0.14694763  1.78071415 -2.69567559  1.04643113  1.03234013
+## [141] -0.66025473 -0.11807037  0.39339273  0.16571085  0.91509397
+## [146] -1.34000793  1.51301472 -2.03440686 -1.02094270 -1.83398293</code></pre>
 <pre class="r"><code>#Función de densidad t-student#
 curve(dt(x,df = 37),xlim=c(-5,5),xlab=&quot;T&quot;,ylab=&quot;f(T)&quot;, main=&quot;Función de densidad T-Student\n grados de libertad = 37&quot;)</code></pre>
 <p><img src="r_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
@@ -896,8 +799,6 @@ qt(1-0.025,37)</code></pre>
 <pre class="r"><code>#Valor k tal que a la derecha hay un área de 0.095 a la derecha
 qt(1-0.095,37)</code></pre>
 <pre><code>## [1] 1.335101</code></pre>
-</div>
-</div>
 
 
 
