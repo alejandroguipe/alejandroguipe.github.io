@@ -7,6 +7,7 @@ title: "R"
 knitr::opts_chunk$set(echo = TRUE)
 #rmarkdown::render_site(encoding="UTF-8")
 #rmarkdown::render_site()
+#rm(list=ls())
 ```
 
 
